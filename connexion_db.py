@@ -1,5 +1,11 @@
 from flask import Flask, request, render_template, redirect, url_for, abort, flash, session, g
 
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 import pymysql.cursors
 
 def get_db():
@@ -7,11 +13,10 @@ def get_db():
     if db is None:
         #
         db = g._database = pymysql.connect(
-            host="localhost",
-            # host="serveurmysql",
-            user="matteo",
-            password="secret!",
-            database="local",
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME"),
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
