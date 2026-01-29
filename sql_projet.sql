@@ -103,15 +103,15 @@ INSERT INTO fruit (nom_fruit) VALUES
                                   ('citron');
 
 INSERT INTO utilisateur (id_utilisateur, nom, prenom, login, email, password, role, est_actif, date_inscription) VALUES
-                                                                                                     (1,'admin', 'admin','admin','admin@admin.fr',
-                                                                                                      'pbkdf2:sha256:1000000$eQDrpqICHZ9eaRTn$446552ca50b5b3c248db2dde6deac950711c03c5d4863fe2bd9cef31d5f11988',
-                                                                                                      'ROLE_admin','1','01-01-2001'),
-                                                                                                     (2,'client','client', 'client','client@client.fr',
-                                                                                                      'pbkdf2:sha256:1000000$jTcSUnFLWqDqGBJz$bf570532ed29dc8e3836245f37553be6bfea24d19dfb13145d33ab667c09b349',
-                                                                                                      'ROLE_client','1','01-01-2001'),
-                                                                                                     (3,'client2','client2','client2','client2@client2.fr',
-                                                                                                      'pbkdf2:sha256:1000000$qDAkJlUehmaARP1S$39044e949f63765b785007523adcde3d2ad9c2283d71e3ce5ffe58cbf8d86080',
-                                                                                                      'ROLE_client','1','01-01-2001');
+                                                                                                                     (1,'admin', 'admin','admin','admin@admin.fr',
+                                                                                                                      'pbkdf2:sha256:1000000$eQDrpqICHZ9eaRTn$446552ca50b5b3c248db2dde6deac950711c03c5d4863fe2bd9cef31d5f11988',
+                                                                                                                      'ROLE_admin','1','01-01-2001'),
+                                                                                                                     (2,'client','client', 'client','client@client.fr',
+                                                                                                                      'pbkdf2:sha256:1000000$jTcSUnFLWqDqGBJz$bf570532ed29dc8e3836245f37553be6bfea24d19dfb13145d33ab667c09b349',
+                                                                                                                      'ROLE_client','1','01-01-2001'),
+                                                                                                                     (3,'client2','client2','client2','client2@client2.fr',
+                                                                                                                      'pbkdf2:sha256:1000000$qDAkJlUehmaARP1S$39044e949f63765b785007523adcde3d2ad9c2283d71e3ce5ffe58cbf8d86080',
+                                                                                                                      'ROLE_client','1','01-01-2001');
 
 INSERT INTO etat (libelle_etat) VALUES
                                     ('En attente'),

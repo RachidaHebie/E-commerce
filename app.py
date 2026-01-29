@@ -23,12 +23,19 @@ from controllers.admin_commentaire import *
 from controllers.client_liste_envies import *
 
 
-def activate_db_options(db):
-    cursor = db.cursor()
-    cursor.execute("SET NAMES utf8mb4")
-    cursor.execute("SET time_zone = '+00:00'")
-    cursor.close()
-
+def get_db():
+    if 'db' not in g:
+        g.db =  pymysql.connect(
+            host="localhost",                 # à modifier
+            user="root",                     # à modifier
+            password="MAMA,22",                # à modifier
+            database="bdd_trhebie",        # à modifier
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        # à activer sur les machines personnelles :
+        activate_db_options(g.db)
+    return g.db
 app = Flask(__name__)
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
 
@@ -91,5 +98,5 @@ app.register_blueprint(admin_commentaire)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 
