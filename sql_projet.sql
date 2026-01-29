@@ -100,8 +100,7 @@ INSERT INTO fruit (nom_fruit) VALUES
                                   ('Raisin'),
                                   ('Mangue'),
                                   ('Fraise'),
-                                  ('Citron'),
-                                  ('Pêche');
+                                  ('citron');
 
 INSERT INTO utilisateur (id_utilisateur, nom, prenom, login, email, password, role, est_actif, date_inscription) VALUES
                                                                                                      (1,'admin', 'admin','admin','admin@admin.fr',
@@ -122,26 +121,26 @@ INSERT INTO etat (libelle_etat) VALUES
 
 -- Jus
 INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
-                                                                                                                                      (NULL, 'Jus de pomme', 2.50, 'Pomme d\'Or', 'Fournisseur A', 1.0, 'Jus de pomme 100% pur', 'pomme.jpg', 50, 1, 1),
-                                                                                                                                      (NULL, 'Jus d\'orange', 2.75, 'Tropicana', 'Fournisseur B', 1.0, 'Jus d\'orange pressé', 'orange.jpg', 45, 1, 2),
-                                                                                                                                      (NULL, 'Jus d\'ananas', 3.00, 'Ananas Sun', 'Fournisseur C', 1.0, 'Jus d\'ananas exotique', 'ananas.jpg', 30, 1, 3),
-                                                                                                                                      (NULL,'Jus de raisin', 2.90, 'Vignoble', 'Fournisseur D', 0.75, 'Jus de raisin noir', 'raisin.jpg', 25, 1, 4),
-                                                                                                                                      (NULL, 'Jus de mangue', 3.20, 'Mango Delight', 'Fournisseur E', 1.0, 'Jus de mangue sucré', 'mangue.jpg', 20, 1, 5);
+                                                                                                                                      (NULL, 'Jus de pomme', 2.50, 'Pomme d\'Or', 'Fournisseur A', 1.0, 'Jus de pomme 100% pur', 'pomme.png', 50, 1, 1),
+                                                                                                                                      (NULL, 'Jus d\'orange', 2.75, 'Tropicana', 'Fournisseur B', 1.0, 'Jus d\'orange pressé', 'orange.png', 45, 1, 2),
+                                                                                                                                      (NULL, 'Jus d\'ananas ', 3.00, 'Ananas Sun', 'Fournisseur C', 1.0, 'Jus d\'ananas', 'ananas.png', 30, 1, 3),
+                                                                                                                                      (NULL,'Jus de raisin', 2.90, 'Vignoble', 'Fournisseur D', 0.75, 'Jus de raisin noir', 'raisin.png', 25, 1, 4),
+                                                                                                                                      (NULL, 'Jus de mangue ', 3.20, 'Mango Delight', 'Fournisseur E', 1.0, 'Jus de mangue sucré', 'mangue.png', 20, 1, 5),
+                                                                                                                                      (NULL, 'fraise ', 3.20, 'fraise Delight', 'Fournisseur E', 1.0, 'Jus de fraise', 'mangue.png', 22, 1, 6);
 
 -- Gazeuses
 INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
-                                                                                                                                      (NULL,'Cola', 1.80, 'ColaCo', 'Fournisseur F', 1.5, 'Soda cola classique', 'cola.jpg', 100, 2, 6),
-                                                                                                                                      (NULL,'Limonade', 1.90, 'CitronFizz', 'Fournisseur G', 1.0, 'Limonade pétillante', 'limonade.jpg', 80, 2, 7),
-                                                                                                                                      (NULL,'Eau gazeuse', 1.50, 'BullePure', 'Fournisseur H', 1.0, 'Eau minérale gazeuse', 'eau_gazeuse.jpg', 60, 2, 1),
-                                                                                                                                      (NULL,'Orange soda', 2.00, 'FizzOrange', 'Fournisseur I', 0.33, 'Soda à l\'orange', 'orange_soda.jpg', 40, 2, 2);
+                                                                                                                                      (NULL,'Cola', 1.80, 'ColaCo', 'Fournisseur F', 1.5, 'Soda cola classique', 'coca.png', 100, 2, 6),
+                                                                                                                                      (NULL,'Limonade', 1.90, 'CitronFizz', 'Fournisseur G', 1.0, 'Limonade pétillante', 'limonade.png', 80, 2, 7),
+                                                                                                                                      (NULL,'Eau gazeuse', 1.50, 'BullePure', 'Fournisseur H', 1.0, 'Eau minérale gazeuse', 'eau_gazeuse.png', 60, 2, 1),
+                                                                                                                                      (NULL,'Orange soda', 2.00, 'FizzOrange', 'Fournisseur I', 0.33, 'Soda à l\'orange', 'orange_soda.png', 40, 2, 2);
 
 -- Énergisantes
 INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
-                                                                                                                                      (NULL,'Boom Energy', 3.50, 'BoomCo', 'Fournisseur J', 0.25, 'Boisson énergétique fruitée', 'boom.jpg', 35, 3, 3),
-                                                                                                                                      (NULL,'PowerUp', 3.75, 'PowerDrink', 'Fournisseur K', 0.5, 'Boisson énergétique citron', 'powerup.jpg', 30, 3, 4),
-                                                                                                                                      (NULL,'Vitality', 3.90, 'VitaMax', 'Fournisseur L', 0.33, 'Boisson énergétique tropicale', 'vitality.jpg', 25, 3, 5),
-                                                                                                                                      (NULL,'TurboCharge', 4.00, 'TurboCo', 'Fournisseur M', 0.5, 'Boisson énergétique intense', 'turbo.jpg', 20, 3, 6),
-                                                                                                                                      (NULL,'FruitPunch Energy', 3.80, 'FruitPunch', 'Fournisseur N', 0.33, 'Boisson énergétique aux fruits rouges', 'fruitpunch.jpg', 15, 3, 6);
+                                                                                                                                      (NULL,'Boom Energy', 3.50, 'BoomCo', 'Fournisseur J', 0.25, 'Boisson énergétique fruitée', 'boom.png', 35, 3, 3),
+                                                                                                                                      (NULL,'PowerUp', 3.75, 'PowerDrink', 'Fournisseur K', 0.5, 'Boisson énergétique citron', 'power.png', 30, 3, 4),
+                                                                                                                                      (NULL,'Vitality', 3.90, 'VitaMax', 'Fournisseur L', 0.33, 'Boisson énergétique tropicale', 'vitality.png', 25, 3, 5),
+                                                                                                                                      (NULL,'FruitPunch Energy', 3.80, 'FruitPunch', 'Fournisseur N', 0.33, 'Boisson énergétique aux fruits rouges', 'punch.png', 15, 3, 6);
 
 
 INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
