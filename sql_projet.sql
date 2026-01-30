@@ -47,7 +47,7 @@ CREATE TABLE boisson(
                         founisseur VARCHAR(50),
                         volume DECIMAL(15,2),
                         description VARCHAR(50),
-                        photo VARCHAR(50),
+                        image VARCHAR(50),
                         stock INT,
                         id_type_boisson INT NOT NULL,
                         id_fruit INT NOT NULL,
@@ -120,24 +120,24 @@ INSERT INTO etat (libelle_etat) VALUES
                                     ('Annulée');
 
 -- Jus
-INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
+INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, image, stock, id_type_boisson, id_fruit) VALUES
                                                                                                                                       (NULL, 'Jus de pomme', 2.50, 'Pomme d\'Or', 'Fournisseur A', 1.0, 'Jus de pomme 100% pur', 'pomme.png', 50, 1, 1),
                                                                                                                                       (NULL, 'Jus d\'orange', 2.75, 'Tropicana', 'Fournisseur B', 1.0, 'Jus d\'orange pressé', 'orange.png', 45, 1, 2),
                                                                                                                                       (NULL, 'Jus d\'ananas ', 3.00, 'Ananas Sun', 'Fournisseur C', 1.0, 'Jus d\'ananas', 'ananas.png', 30, 1, 3),
                                                                                                                                       (NULL,'Jus de raisin', 2.90, 'Vignoble', 'Fournisseur D', 0.75, 'Jus de raisin noir', 'raisin.png', 25, 1, 4),
                                                                                                                                       (NULL, 'Jus de mangue ', 3.20, 'Mango Delight', 'Fournisseur E', 1.0, 'Jus de mangue sucré', 'mangue.png', 20, 1, 5),
-                                                                                                                                      (NULL, 'fraise ', 3.20, 'fraise Delight', 'Fournisseur E', 1.0, 'Jus de fraise', 'mangue.png', 22, 1, 6);
+                                                                                                                                      (NULL, 'fraise ', 3.20, 'fraise Delight', 'Fournisseur E', 1.0, 'Jus de fraise', 'fraise.png', 22, 1, 6);
 
 -- Gazeuses
-INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
+INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, image, stock, id_type_boisson, id_fruit) VALUES
                                                                                                                                       (NULL,'Cola', 1.80, 'ColaCo', 'Fournisseur F', 1.5, 'Soda cola classique', 'coca.png', 100, 2, 6),
                                                                                                                                       (NULL,'Limonade', 1.90, 'CitronFizz', 'Fournisseur G', 1.0, 'Limonade pétillante', 'limonade.png', 80, 2, 7),
-                                                                                                                                      (NULL,'Eau gazeuse', 1.50, 'BullePure', 'Fournisseur H', 1.0, 'Eau minérale gazeuse', 'eau_gazeuse.png', 60, 2, 1),
+                                                                                                                                      (NULL,'Eau gazeuse', 1.50, 'BullePure', 'Fournisseur H', 1.0, 'Eau minérale gazeuse', 'eau_gazeuze.png', 60, 2, 1),
                                                                                                                                       (NULL,'Orange soda', 2.00, 'FizzOrange', 'Fournisseur I', 0.33, 'Soda à l\'orange', 'orange_soda.png', 40, 2, 2);
 
 -- Énergisantes
-INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, photo, stock, id_type_boisson, id_fruit) VALUES
-                                                                                                                                      (NULL,'Boom Energy', 3.50, 'BoomCo', 'Fournisseur J', 0.25, 'Boisson énergétique fruitée', 'boom.png', 35, 3, 3),
+INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, image, stock, id_type_boisson, id_fruit) VALUES
+                                                                                                                                      (NULL,'Boom Energy', 3.50, 'BoomCo', 'Fournisseur J', 0.25, 'Boisson énergétique fruitée', 'boom_energy.png', 35, 3, 3),
                                                                                                                                       (NULL,'PowerUp', 3.75, 'PowerDrink', 'Fournisseur K', 0.5, 'Boisson énergétique citron', 'power.png', 30, 3, 4),
                                                                                                                                       (NULL,'Vitality', 3.90, 'VitaMax', 'Fournisseur L', 0.33, 'Boisson énergétique tropicale', 'vitality.png', 25, 3, 5),
                                                                                                                                       (NULL,'FruitPunch Energy', 3.80, 'FruitPunch', 'Fournisseur N', 0.33, 'Boisson énergétique aux fruits rouges', 'punch.png', 15, 3, 6);

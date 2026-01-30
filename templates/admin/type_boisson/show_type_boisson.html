@@ -19,7 +19,7 @@
     {% if types_boisson | length >= 1 %}
         {% for ligne in types_boisson %}
            <tr>
-                  <td>{{ ligne.libelle }}</td>
+                  <td>{{ ligne.nom_type_boisson }}</td>
                   <td>{{ ligne.id_type_boisson }}</td>
                    <td><span style="color: red">{{ ligne.nbr_boissons }}</span></td>
                   <td>

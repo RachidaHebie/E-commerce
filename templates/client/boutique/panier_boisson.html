@@ -25,13 +25,13 @@
                             <div class="card-body border-dark rounded p-1">
                                 <a href="/client/boisson/details?id_boisson={{ boisson.id_boisson }}" >
                                 <h3 class="card-title">
-                                    <span style="color: #0b2e13">{{ boisson.nom }}</span><br>
-                                    {{ boisson.prix }}
+                                    <span style="color: #0b2e13">{{ boisson.nom_boisson }}</span><br>
+                                    {{ boisson.prix_boisson }}
                                     €
                                 </h3>
                                      {%  if boisson.image is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/')}}{{ boisson.image }}"  alt="image  de {{ boisson.nom }}" >
-                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ boisson.nom }}" >
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:400px;height:320px"  src="{{ url_for('static', filename = 'images/')}}{{ boisson.image }}"  alt="image  de {{ boisson.nom_boisson }}" >
+                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:400px;height:325px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ boisson.nom_boisson }}" >
                                     {% endif %}
                                     <hr>
                                 </a>

@@ -11,10 +11,10 @@ admin_type_boisson = Blueprint('admin_type_boisson', __name__,
 @admin_type_boisson.route('/admin/type-boisson/show')
 def show_type_boisson():
     mycursor = get_db().cursor()
-    # sql = '''         '''
-    # mycursor.execute(sql)
-    # types_boisson = mycursor.fetchall()
-    types_boisson=[]
+    sql = '''  SELECT *  from type_boisson;       '''
+    mycursor.execute(sql)
+    types_boisson = mycursor.fetchall()
+
     return render_template('admin/type_boisson/show_type_boisson.html', types_boisson=types_boisson)
 
 @admin_type_boisson.route('/admin/type-boisson/add', methods=['GET'])

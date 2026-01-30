@@ -17,7 +17,7 @@ admin_boisson = Blueprint('admin_boisson', __name__,
 @admin_boisson.route('/admin/boisson/show')
 def show_boisson():
     mycursor = get_db().cursor()
-    sql = '''  requête admin_boisson_1
+    sql = '''  SELECT * FROM boisson;
     '''
     mycursor.execute(sql)
     boissons = mycursor.fetchall()
