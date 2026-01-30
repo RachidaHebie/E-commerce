@@ -1,37 +1,37 @@
 {% extends 'admin/layout_admin.html' %}
 
 {% block title %}
-    <title>afficher les types d'article</title>
+    <title>afficher les types d'boisson</title>
 {% endblock %}
 
 {% block body %}
-<h3>Déclinaison et/ou type d'article (catégorie)</h3>
-<a class="btn btn-outline-success" href="/admin/type-article/add">ajouter un type d'article</a>
+<h3>Déclinaison et/ou type d'boisson (catégorie)</h3>
+<a class="btn btn-outline-success" href="/admin/type-boisson/add">ajouter un type d'boisson</a>
 <br><br>
 
 <table class="table">
     <thead class="thead-dark">
         <tr>
-           <th>designation</th> <th>(id_type_article)</th><th>nombre d'articles</th><th>opération</th>
+           <th>designation</th> <th>(id_type_boisson)</th><th>nombre d'boissons</th><th>opération</th>
         </tr>
     </thead>
     <tbody>
-    {% if types_article | length >= 1 %}
-        {% for ligne in types_article %}
+    {% if types_boisson | length >= 1 %}
+        {% for ligne in types_boisson %}
            <tr>
                   <td>{{ ligne.libelle }}</td>
-                  <td>{{ ligne.id_type_article }}</td>
-                   <td><span style="color: red">{{ ligne.nbr_articles }}</span></td>
+                  <td>{{ ligne.id_type_boisson }}</td>
+                   <td><span style="color: red">{{ ligne.nbr_boissons }}</span></td>
                   <td>
-                      <a class="btn btn-outline-danger" href="/admin/type-article/edit?id_type_article={{ ligne.id_type_article }}">editer</a>&nbsp;
-                      <a class="btn btn-outline-warning" href="/admin/type-article/delete?id_type_article={{ ligne.id_type_article }}">supprimer</a>
+                      <a class="btn btn-outline-danger" href="/admin/type-boisson/edit?id_type_boisson={{ ligne.id_type_boisson }}">editer</a>&nbsp;
+                      <a class="btn btn-outline-warning" href="/admin/type-boisson/delete?id_type_boisson={{ ligne.id_type_boisson }}">supprimer</a>
                   </td>
            </tr>
         {% endfor %}
     {% else %}
             <tr>
                   <td>
-                      pas de type d'article
+                      pas de type d'boisson
                   </td>
            </tr>
     {% endif %}

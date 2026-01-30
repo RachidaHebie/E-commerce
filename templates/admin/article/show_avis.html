@@ -1,18 +1,18 @@
-{# PAGE POUR AJOUTER ET COMMENTER LES ARTICLES#}
+{# PAGE POUR AJOUTER ET COMMENTER LES boissonS#}
 {# non utilisée pour le moment mais pour la deuxieme partie sur les commentaires #}
 {% extends "admin/layout_admin.html" %}
 {% block body %}
 <div class="container">
     <div class="text-center">
          <h2 class="card-title">
-             <span style="color: #0b2e13">{{ article.libelle }}</span> &nbsp;{{ article.prix }} €
+             <span style="color: #0b2e13">{{ boisson.libelle }}</span> &nbsp;{{ boisson.prix }} €
          </h2>
 
         <div class="card-body">
-        <h4>{{ article.description }}</h4>
-        {%  if article.image is not none %}
-            <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + article['image']) }}"  alt="image  de {{ article.nom }}" >
-        {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
+        <h4>{{ boisson.description }}</h4>
+        {%  if boisson.image is not none %}
+            <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/' + boisson['image']) }}"  alt="image  de {{ boisson.nom }}" >
+        {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ boisson.nom }}" >
         {% endif %}
 
         </div>
@@ -49,7 +49,7 @@
                         </td>
                         <td>
                               <form  action="/admin/comment/delete"  style="display: inline-block;"  method="post" >
-                                  <input type="hidden" name="idArticle" value="{{ commentaire.declinaison_article_id }}">
+                                  <input type="hidden" name="idboisson" value="{{ commentaire.declinaison_boisson_id }}">
                                   <input type="hidden" name="idUser" value="{{ commentaire.user_id }}">
                                   <label for="malus">Ajouter un malus</label>
                                   <input type="checkbox" name="malus" value="malus">
@@ -63,7 +63,7 @@
             {% endif %}
             </tbody>
         </table>
-        <a class="btn btn-outline-primary btn-lg" href="/admin/article/show" >Retour vers la page d'accueil</a>
+        <a class="btn btn-outline-primary btn-lg" href="/admin/boisson/show" >Retour vers la page d'accueil</a>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
-{#  articles_panier  : tableau de dictionnaires
-        * dictionnaire : nom quantite prix article_id [stock]
+{#  boissons_panier  : tableau de dictionnaires
+        * dictionnaire : nom quantite prix boisson_id [stock]
         *
 #}
 
@@ -10,79 +10,79 @@
         {% include('client/boutique/_panier.html') %}
             <div class="col">
               <h3>Les filtres</h3>
-              Articles dont le nom est composé par :<br>
+              boissons dont le nom est composé par :<br>
                  {% include('client/boutique/_filtre.html') %}
             </div>
         </div>
 
         <div class="bg-light p-3">
-            <h1>Les articles</h1>
+            <h1>Les boissons</h1>
         </div>
 
         <div class="row">
-                {% for article in articles  %}
+                {% for boisson in boissons  %}
                         <div class="card col-4 mt-4 p-1">
                             <div class="card-body border-dark rounded p-1">
-                                <a href="/client/article/details?id_article={{ article.id_article }}" >
+                                <a href="/client/boisson/details?id_boisson={{ boisson.id_boisson }}" >
                                 <h3 class="card-title">
-                                    <span style="color: #0b2e13">{{ article.nom }}</span><br>
-                                    {{ article.prix }}
+                                    <span style="color: #0b2e13">{{ boisson.nom }}</span><br>
+                                    {{ boisson.prix }}
                                     €
                                 </h3>
-                                     {%  if article.image is not none %}
-                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/')}}{{ article.image }}"  alt="image  de {{ article.nom }}" >
-                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ article.nom }}" >
+                                     {%  if boisson.image is not none %}
+                                        <img class="card-img-top rounded mx-auto d-block"  style="width:100px;height:100px"  src="{{ url_for('static', filename = 'images/')}}{{ boisson.image }}"  alt="image  de {{ boisson.nom }}" >
+                                    {% else %} <img class="card-img-top rounded mx-auto d-block"   style="width:100px;height:100px"   src="{{ url_for('static', filename='images/no_photo.jpeg')}}"  alt="image  de {{ boisson.nom }}" >
                                     {% endif %}
                                     <hr>
                                 </a>
                                 <div class="row">
-{# #}                                {% if  article.stock is defined and article.stock != None %}
-{# #}                                    {% if article.stock > 0 %}
+{# #}                                {% if  boisson.stock is defined and boisson.stock != None %}
+{# #}                                    {% if boisson.stock > 0 %}
                                         <form  action="/client/panier/add"  method="post" class="col-5">
-                                            <input type="hidden" name="id_article" value="{{ article.id_article }}">
+                                            <input type="hidden" name="id_boisson" value="{{ boisson.id_boisson }}">
                                             <div class="input-group">
                                             <button class="btn  btn-success"  id="button-addon1">
                                                 <i class="fas fa-shopping-cart">Ajouter</i>
                                             </button>
-                                            <input type="number" id="input-{{ article.id_article }}" step="1" min="0" max="{{ article.stock }}" class="form-control" value="1" name="quantite"  aria-describedby="button-addon1">
+                                            <input type="number" id="input-{{ boisson.id_boisson }}" step="1" min="0" max="{{ boisson.stock }}" class="form-control" value="1" name="quantite"  aria-describedby="button-addon1">
                                             </div>
                                         </form>
 {# #}                                    {% endif %}
 {# #}                                {% endif %}
                                      <div class="col-2 align-content-end">
-                                    {% if article.liste_envie is defined %}
-                                         {%if  article.liste_envie== 1%}
-                                             <a href="/client/envie/add?id_article={{ article.id_article }}" style="text-decoration: none">💛</a>
+                                    {% if boisson.liste_envie is defined %}
+                                         {%if  boisson.liste_envie== 1%}
+                                             <a href="/client/envie/add?id_boisson={{ boisson.id_boisson }}" style="text-decoration: none">💛</a>
                                          {% else %}
-                                             <a href="/client/envie/add?id_article={{ article.id_article }}" style="text-decoration: none">🤍</a>
+                                             <a href="/client/envie/add?id_boisson={{ boisson.id_boisson }}" style="text-decoration: none">🤍</a>
                                          {% endif %}
                                     {% endif %}
                                      </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                            {% if article.stock is defined and article.stock != None %}
-                                 {% if article.stock > 0 %}
-                                    <small class="text-muted">Stock restant : {{ article.stock }}</small>
+                            {% if boisson.stock is defined and boisson.stock != None %}
+                                 {% if boisson.stock > 0 %}
+                                    <small class="text-muted">Stock restant : {{ boisson.stock }}</small>
                                  {% else %}
-                                    <small class="text-muted">article  momentanément indisponible</small>
+                                    <small class="text-muted">boisson  momentanément indisponible</small>
                                  {% endif %}
-                                {% if article.nb_declinaison is defined and article.nb_declinaison != None %}
-                                    ({{ article.nb_declinaison }} d.)
+                                {% if boisson.nb_declinaison is defined and boisson.nb_declinaison != None %}
+                                    ({{ boisson.nb_declinaison }} d.)
                                 {% endif %}
                                 <br>
                             {% endif %}
-                            {% if article.nb_notes is defined %}
-                                {% if article.nb_notes > 0 %}
-                                 <a  href="/client/article/details?id_article={{ article.id_article }}" >
-                                    <span style="color: #3A7734"> note : {{  "{:,.1f}".format(article.moy_notes) }}({{ article.nb_notes }})</span>
+                            {% if boisson.nb_notes is defined %}
+                                {% if boisson.nb_notes > 0 %}
+                                 <a  href="/client/boisson/details?id_boisson={{ boisson.id_boisson }}" >
+                                    <span style="color: #3A7734"> note : {{  "{:,.1f}".format(boisson.moy_notes) }}({{ boisson.nb_notes }})</span>
                                  </a>
                                 {% endif %}
                             {% endif %}
-                            {% if article.nb_avis is defined %}
-                                {% if article.nb_avis > 0 %}
-                                 <a href="/client/article/details?id_article={{ article.id_article }}" >
-                                    <span style="color: #3A7734">({{ article.nb_avis }} avis)</span>
+                            {% if boisson.nb_avis is defined %}
+                                {% if boisson.nb_avis > 0 %}
+                                 <a href="/client/boisson/details?id_boisson={{ boisson.id_boisson }}" >
+                                    <span style="color: #3A7734">({{ boisson.nb_avis }} avis)</span>
                                  </a>
                                 {% endif %}
                             {% endif %}
@@ -91,5 +91,5 @@
                 {% endfor %}
         </div>
     </div>
-{#    {{ articles | pprint }}#}
+{#    {{ boissons | pprint }}#}
 {% endblock %}

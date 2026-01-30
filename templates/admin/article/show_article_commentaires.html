@@ -1,7 +1,7 @@
 {% extends 'admin/layout_admin.html' %}
 
 {% block title %}
-    <title>commentaire d'un article</title>
+    <title>commentaire d'un boisson</title>
 {% endblock %}
 
 {% block body %}
@@ -9,14 +9,14 @@
    <div class="row">
    <div class="col-5 bg-light p-3">
         <h3>Les commentaires (dates décroissantes)</h3>
-       <h3>article  <span style="color: green">{{ article.nom }}</span></h3>
+       <h3>boisson  <span style="color: green">{{ boisson.nom }}</span></h3>
        {% if nb_commentaires.nb_commentaires_total is defined %}  <strong> {{ nb_commentaires.nb_commentaires_total }}</strong> commentaire(s)
            dont {% if nb_commentaires.nb_commentaires_valider is defined %}<strong>
                     {{ nb_commentaires.nb_commentaires_valider }}</strong> commentaire(s) validé(s)
                 {% endif %}
         {% else %} Pas de commentaire
        {% endif %}
-       <br>Note : {% if article.nb_notes is defined and article.nb_notes >= 0 %} <strong>{{ article.moyenne_notes }}</strong> ( {{ article.nb_notes }} note(s))
+       <br>Note : {% if boisson.nb_notes is defined and boisson.nb_notes >= 0 %} <strong>{{ boisson.moyenne_notes }}</strong> ( {{ boisson.nb_notes }} note(s))
        {% else %} Pas de note
        {% endif %}
    </div>
@@ -50,15 +50,15 @@
                             {{ commentaire.commentaire }}
                         </td>
                         <td>
-                                  <form  action="/admin/article/commentaires/delete"  style="display: inline-block;"  method="post" >
-                                      <input type="hidden" name="id_article" value="{{ commentaire.id_article }}">
+                                  <form  action="/admin/boisson/commentaires/delete"  style="display: inline-block;"  method="post" >
+                                      <input type="hidden" name="id_boisson" value="{{ commentaire.id_boisson }}">
                                       <input type="hidden" name="id_utilisateur" value="{{ commentaire.id_utilisateur }}">
                                       <input type="hidden" name="date_publication" value="{{ commentaire.date_publication }}">
                                       <button class="btn btn-primary" > supprimer </button>
                                   </form>
                             {% if commentaire.utilisateur_id != session['id_user'] %}
-                                  <form  action="/admin/article/commentaires/repondre"  style="display: inline-block;"  method="GET" >
-                                      <input type="hidden" name="id_article" value="{{ commentaire.id_article }}">
+                                  <form  action="/admin/boisson/commentaires/repondre"  style="display: inline-block;"  method="GET" >
+                                      <input type="hidden" name="id_boisson" value="{{ commentaire.id_boisson }}">
                                       <input type="hidden" name="id_utilisateur" value="{{ commentaire.id_utilisateur }}">
                                       <input type="hidden" name="date_publication" value="{{ commentaire.date_publication }}">
                                       <button class="btn btn-primary" > répondre </button>
@@ -72,8 +72,8 @@
             {% endif %}
             </tbody>
         </table>
-       <a class="btn btn-primary m-4 col-2" href="/admin/article/commentaires/valider?id_article={{ article.id_article }}">valider les commenaires</a>
-       <a class="btn btn-outline-primary btn-lg" href="/admin/article/show">Retour vers la page d'accueil</a>
+       <a class="btn btn-primary m-4 col-2" href="/admin/boisson/commentaires/valider?id_boisson={{ boisson.id_boisson }}">valider les commenaires</a>
+       <a class="btn btn-outline-primary btn-lg" href="/admin/boisson/show">Retour vers la page d'accueil</a>
     </div>
 
 {% endblock %}

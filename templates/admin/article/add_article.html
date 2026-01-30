@@ -1,15 +1,15 @@
 {% extends 'admin/layout_admin.html' %}
 
 {% block title %}
-    <title>ajouter un article</title>
+    <title>ajouter un boisson</title>
 {% endblock %}
 
 {% block body %}
-    <h2>ajouter un article</h2>
+    <h2>ajouter un boisson</h2>
     <div class="row mt-5">
         <img class="card-img-top rounded mx-4 d-block"  style="width:200px; height:200px; border: 1px solid black; padding: 5px;" id="img_output" src="{{ url_for('static', filename = 'images/')}}no_photo.jpeg" alt="">
         <div class="w-25">
-            <form class="w-190" method="post" action="/admin/article/add" enctype="multipart/form-data">
+            <form class="w-190" method="post" action="/admin/boisson/add" enctype="multipart/form-data">
                 <label for="nom">Nom :
                     <input name="nom" type="text" value=""  class="form-control" required>
                 </label>
@@ -20,11 +20,11 @@
                     <input name="image" type="file" onchange="loadFile(event)"   class="form-control">
                 </label>
 
-                <label for="type_article_id">Type de l'article :
-                    <select name="type_article_id" required class="form-select">
-                        <option value="">Sélectionner un type d'article</option>
-                        {% for type in types_article %}
-                             <option value="{{ type.id_type_article }}"> {{ type.libelle }}</option>
+                <label for="type_boisson_id">Type de l'boisson :
+                    <select name="type_boisson_id" required class="form-select">
+                        <option value="">Sélectionner un type d'boisson</option>
+                        {% for type in types_boisson %}
+                             <option value="{{ type.id_type_boisson }}"> {{ type.libelle }}</option>
                         {% endfor %}
                     </select>
                 </label>
@@ -35,7 +35,7 @@
                     <input name="submit" type="submit" value="Ajouter" class="btn btn-primary mt-2">
                 </label>
             </form>
-        <a href="/admin/article/show"><button class="btn btn-secondary mt-2">annuler</button></a>
+        <a href="/admin/boisson/show"><button class="btn btn-secondary mt-2">annuler</button></a>
         </div>
     </div>
 {% endblock %}

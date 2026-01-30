@@ -22,7 +22,7 @@ def admin_commande_show():
 
     commandes=[]
 
-    articles_commande = None
+    boissons_commande = None
     commande_adresses = None
     id_commande = request.args.get('id_commande', None)
     print(id_commande)
@@ -31,7 +31,7 @@ def admin_commande_show():
         commande_adresses = []
     return render_template('admin/commandes/show.html'
                            , commandes=commandes
-                           , articles_commande=articles_commande
+                           , boissons_commande=boissons_commande
                            , commande_adresses=commande_adresses
                            )
 

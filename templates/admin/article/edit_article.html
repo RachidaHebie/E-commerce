@@ -1,62 +1,62 @@
 {#
-article (dictionnaire)
-id_article, nom, type_article_id, prix, image
+boisson (dictionnaire)
+id_boisson, nom, type_boisson_id, prix, image
     * option :
         * stock ,
         * nb_avis ,
         * nb_declinaisons
 
-types_article : tableau de dictionnaires
-* tableau de "type_article"
-    * id_type_article, libelle
+types_boisson : tableau de dictionnaires
+* tableau de "type_boisson"
+    * id_type_boisson, libelle
 #}
 
 {% extends 'admin/layout_admin.html' %}
 {% block title %}
-    <title>modifier un article</title>
+    <title>modifier un boisson</title>
 {% endblock %}
 
 {% block body %}
-    <h2>modifier un article</h2>
+    <h2>modifier un boisson</h2>
         <div class="row mt-5">
-        {%  if article.image is not none %}
-            <img class="card-img-top rounded mx-4 d-block"  style="width:200px; height:200px; border: 1px solid black; padding: 25px;"   id="img_output" src="{{ url_for('static', filename = 'images/') }}{{ article.image}}"  alt="image  de {{ article.nom }}" >
+        {%  if boisson.image is not none %}
+            <img class="card-img-top rounded mx-4 d-block"  style="width:200px; height:200px; border: 1px solid black; padding: 25px;"   id="img_output" src="{{ url_for('static', filename = 'images/') }}{{ boisson.image}}"  alt="image  de {{ boisson.nom }}" >
         {% endif %}
             <div class="w-25">
-                <form class="w-190" method="post" action="/admin/article/edit" enctype="multipart/form-data">
-                    <input type="hidden" value="{{ article.id_article }}" name="id_article">
+                <form class="w-190" method="post" action="/admin/boisson/edit" enctype="multipart/form-data">
+                    <input type="hidden" value="{{ boisson.id_boisson }}" name="id_boisson">
                     <label for="nom">Nom :
-                        <input name="nom" type="text" value="{{ article.nom }}" class="form-control">
+                        <input name="nom" type="text" value="{{ boisson.nom }}" class="form-control">
                     </label>
                     <label for="prix" > Prix (€) :
-                        <input name="prix" type="number" min="0.0" step="0.01" value="{{ article.prix }}" class="form-control" >
+                        <input name="prix" type="number" min="0.0" step="0.01" value="{{ boisson.prix }}" class="form-control" >
                     </label>
                     <label for="image">Image :                       {# à modifier #}
-                        <input name="image"  onchange="loadFile(event)" type="file" class="form-control" value="{{ article.image }}">             {# à modifier #}
+                        <input name="image"  onchange="loadFile(event)" type="file" class="form-control" value="{{ boisson.image }}">             {# à modifier #}
                     </label>                                         {# à modifier #}
 {#                https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask#}
 
-                <label for="type_article_id">Type de l'article :
-                    <select name="type_article_id" class="form-select">
-                            {% for type in types_article %}
-                                 <option value="{{ type.id_type_article }}" {% if type.id_type_article == article.type_article_id %} selected {% endif %}> {{ type.libelle }}</option>
+                <label for="type_boisson_id">Type de l'boisson :
+                    <select name="type_boisson_id" class="form-select">
+                            {% for type in types_boisson %}
+                                 <option value="{{ type.id_type_boisson }}" {% if type.id_type_boisson == boisson.type_boisson_id %} selected {% endif %}> {{ type.libelle }}</option>
                             {% endfor %}
                         </select>
                     </label>
                     <label for="description">Description :
-                        <input name="description" type="text" value="{{ article.description }}" class="form-control">
+                        <input name="description" type="text" value="{{ boisson.description }}" class="form-control">
                     </label>
                     <button class="btn btn-primary mt-2">
                                 Modifier
                     </button>
-                    <a class="btn btn-secondary mt-2" href="/admin/article/show"  role="button">retour</a>
+                    <a class="btn btn-secondary mt-2" href="/admin/boisson/show"  role="button">retour</a>
                 </form>
 
                 <div class="container-fluid " style="width: 1000px;">
 
                     <div style="display: flex; justify-content: space-between">
                         <h3>déclinaison en fonction de la taille/couleur (variante)</h3>
-                        <a class="img-fluid" href="/admin/declinaison_article/add?id_article={{ article.id_article }}">
+                        <a class="img-fluid" href="/admin/declinaison_boisson/add?id_boisson={{ boisson.id_boisson }}">
                             <button class="btn btn-primary">
                                 Ajouter une déclinaison (variante)
                             </button>
@@ -69,7 +69,7 @@ types_article : tableau de dictionnaires
                         <th style="width: 300px">stock</th>
                         <th style="width: 300px">opérations</th>
 
-                        {% if declinaisons_article | length == 0 %}
+                        {% if declinaisons_boisson | length == 0 %}
                             <tr>
                                 <td>Aucun modèle</td>
                                 <td></td>
@@ -77,22 +77,22 @@ types_article : tableau de dictionnaires
                                 <td></td>
                             </tr>
                         {% else %}
-                            {% for declinaison_article in declinaisons_article %}
+                            {% for declinaison_boisson in declinaisons_boisson %}
                                 <tr>
                                     <td>
-                                        {{ declinaison_article.libelle_taille }}
+                                        {{ declinaison_boisson.libelle_taille }}
                                     </td>
                                     <td>
-                                        {{ declinaison_article.libelle_couleur }}
+                                        {{ declinaison_boisson.libelle_couleur }}
                                     </td>
-                                    <td>{{ declinaison_article.stock }}</td>
+                                    <td>{{ declinaison_boisson.stock }}</td>
                                     <td style="display: flex">
-                                        <a class="img-fluid" href="/admin/declinaison_article/delete?id_declinaison_article={{ declinaison_article.id_declinaison_article }}&amp;id_article={{ declinaison_article.article_id }}">
+                                        <a class="img-fluid" href="/admin/declinaison_boisson/delete?id_declinaison_boisson={{ declinaison_boisson.id_declinaison_boisson }}&amp;id_boisson={{ declinaison_boisson.boisson_id }}">
                                             <button class="btn btn-primary mx-1">
                                                 supprimer
                                             </button>
                                         </a>
-                                        <a class="img-fluid" href="/admin/declinaison_article/edit?id_declinaison_article={{ declinaison_article.id_declinaison_article }}">
+                                        <a class="img-fluid" href="/admin/declinaison_boisson/edit?id_declinaison_boisson={{ declinaison_boisson.id_declinaison_boisson }}">
                                             <button class="btn btn-primary mx-1">
                                                 editer
                                             </button>

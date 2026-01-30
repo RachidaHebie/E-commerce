@@ -1,14 +1,14 @@
 {% extends "admin/layout_admin.html" %}
 {% block body %}
     <div class="container-fluid">
-        {% if articles_commande %}
+        {% if boissons_commande %}
             <h3>Recapitulatifs de la commande selectionnée</h3>
             <table class="table">
                 <thead class="thead-dark">
                     <tr><th>Nom</th><th>Quantite</th><th>Prix</th><th>Prix total</th></tr>
                 </thead>
                 <tbody>
-                        {% for ligne in articles_commande %}
+                        {% for ligne in boissons_commande %}
                              <tr>
                                 <td>{{ ligne.nom }}
                                 {% if ligne.nb_declinaisons is defined and ligne.nb_declinaisons > 1 %}
@@ -45,9 +45,9 @@
                 {% endif %}
                 </div>
 
-            {% if articles_commande[0].etat_id == 1 %}
+            {% if boissons_commande[0].etat_id == 1 %}
             <form action="/admin/commande/valider"  style="display: inline-block;"  method="post">
-                  <input type="hidden" name="idCommande" value="{{ articles_commande[0].id }}">
+                  <input type="hidden" name="idCommande" value="{{ boissons_commande[0].id }}">
                   <button class="btn btn-primary" > Valider (Expédier) </button>
             </form>
             {% endif %}
@@ -65,7 +65,7 @@
                         <tr>
                             <th>login client</th>
                             <th>Date de commande</th>
-                            <th>Nombre d'articles</th>
+                            <th>Nombre d'boissons</th>
                             <th>Coût total</th>
                             <th>Etat de la commande</th>
                             <th style="text-align: center;">Options</th>
@@ -76,7 +76,7 @@
                             <tr id="" {% if commande.etat_id == 1 %} class="table-warning" style="font-weight: bold;"{% endif %}>
                                 <td>{{ commande.login }}</td>
                                 <td>{{ commande.date_achat.strftime('%d-%m-%Y') }}</td>
-                                <td> {{ commande.nbr_articles }} </td>
+                                <td> {{ commande.nbr_boissons }} </td>
                                 <td>
                                     {{ commande.prix_total }}
                                 </td>

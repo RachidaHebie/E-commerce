@@ -1,7 +1,7 @@
 {#
-articles (tableau de dictionnaires)
-* tableau de "article"
-    * id_article, nom, type_article_id, prix
+boissons (tableau de dictionnaires)
+* tableau de "boisson"
+    * id_boisson, nom, type_boisson_id, prix
     * option :
         * stock ,
         * nb_avis ,
@@ -10,28 +10,28 @@ articles (tableau de dictionnaires)
 {% extends 'admin/layout_admin.html' %}
 
 {% block title %}
-    <title>afficher les articles</title>
+    <title>afficher les boissons</title>
 {% endblock %}
 
 {% block body %}
-<h3>article</h3>
-<a  class="btn btn-outline-success" href="/admin/article/add">ajouter un article</a>
+<h3>boisson</h3>
+<a  class="btn btn-outline-success" href="/admin/boisson/add">ajouter un boisson</a>
 <br><br>
-{#{{ articles }}#}
+{#{{ boissons }}#}
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th>nom</th><th>id</th><th>type article (id)</th><th>prix</th><th style="color: green">stock</th>
+            <th>nom</th><th>id</th><th>type boisson (id)</th><th>prix</th><th style="color: green">stock</th>
             <th>nouveaux avis</th><th>nb déclinaisons</th><th>image</th><th>opération</th>
         </tr>
     </thead>
     <tbody>
-    {% if articles | length >= 1 %}
-        {% for ligne in articles %}
+    {% if boissons | length >= 1 %}
+        {% for ligne in boissons %}
            <tr>
                   <td>{{ ligne.nom }}</td>
-                  <td>{{ ligne.id_article }}</td>
-                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.type_article_id }})</td>
+                  <td>{{ ligne.id_boisson }}</td>
+                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.type_boisson_id }})</td>
                   <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix) }}</td>
                   <td>
                   {% if ligne.stock is defined %}
@@ -42,7 +42,7 @@ articles (tableau de dictionnaires)
                                 <span style="color: #fd7e14">(⚠️ déclinaison(s) en rupture)</span>
                             {% endif %}
                         {% else %}
-                            <strong class="text-muted">article momentanément indisponible</strong>
+                            <strong class="text-muted">boisson momentanément indisponible</strong>
                         {% endif %}
                      {% else %}
                              <strong class="text-muted">déclinaison ND</strong>
@@ -54,7 +54,7 @@ articles (tableau de dictionnaires)
                    <td>
                   {% if ligne.nb_commentaires_nouveaux is defined %}
                      {% if ligne.nb_commentaires_nouveaux > 0 %}
-                         <a href="/admin/article/commentaires?id_article={{ ligne.id_article }}"><strong style="color: red">{{ ligne.nb_commentaires_nouveaux }} avis non lu(s) ⚠️ </strong></a>
+                         <a href="/admin/boisson/commentaires?id_boisson={{ ligne.id_boisson }}"><strong style="color: red">{{ ligne.nb_commentaires_nouveaux }} avis non lu(s) ⚠️ </strong></a>
                      {% else %}
                         <strong class="text-muted"></strong>
                      {% endif %}
@@ -79,16 +79,16 @@ articles (tableau de dictionnaires)
                         {% endif %}
                   </td>
                   <td>
-                      <a  class="btn btn-outline-danger" href="/admin/article/delete?id_article={{ ligne.id_article }}" onclick="return confirm('Are you sure?')" >supprimer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/edit?id_article={{ ligne.id_article }}">editer</a>
-                      <a  class="btn btn-outline-warning" href="/admin/article/commentaires?id_article={{ ligne.id_article }}">commentaires</a>
+                      <a  class="btn btn-outline-danger" href="/admin/boisson/delete?id_boisson={{ ligne.id_boisson }}" onclick="return confirm('Are you sure?')" >supprimer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/boisson/edit?id_boisson={{ ligne.id_boisson }}">editer</a>
+                      <a  class="btn btn-outline-warning" href="/admin/boisson/commentaires?id_boisson={{ ligne.id_boisson }}">commentaires</a>
                   </td>
            </tr>
         {% endfor %}
     {% else %}
             <tr>
                   <td>
-                      pas d'article
+                      pas d'boisson
                   </td>
            </tr>
     {% endif %}

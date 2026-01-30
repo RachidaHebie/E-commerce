@@ -9,56 +9,56 @@ admin_commentaire = Blueprint('admin_commentaire', __name__,
                         template_folder='templates')
 
 
-@admin_commentaire.route('/admin/article/commentaires', methods=['GET'])
-def admin_article_details():
+@admin_commentaire.route('/admin/boisson/commentaires', methods=['GET'])
+def admin_boisson_details():
     mycursor = get_db().cursor()
-    id_article =  request.args.get('id_article', None)
-    sql = '''    requête admin_type_article_1    '''
+    id_boisson =  request.args.get('id_boisson', None)
+    sql = '''    requête admin_type_boisson_1    '''
     commentaires = {}
-    sql = '''   requête admin_type_article_1_bis   '''
-    article = []
-    sql = '''   requête admin_type_article_1_3   '''
+    sql = '''   requête admin_type_boisson_1_bis   '''
+    boisson = []
+    sql = '''   requête admin_type_boisson_1_3   '''
     nb_commentaires = []
-    return render_template('admin/article/show_article_commentaires.html'
+    return render_template('admin/boisson/show_boisson_commentaires.html'
                            , commentaires=commentaires
-                           , article=article
+                           , boisson=boisson
                            , nb_commentaires=nb_commentaires
                            )
 
-@admin_commentaire.route('/admin/article/commentaires/delete', methods=['POST'])
+@admin_commentaire.route('/admin/boisson/commentaires/delete', methods=['POST'])
 def admin_comment_delete():
     mycursor = get_db().cursor()
     id_utilisateur = request.form.get('id_utilisateur', None)
-    id_article = request.form.get('id_article', None)
+    id_boisson = request.form.get('id_boisson', None)
     date_publication = request.form.get('date_publication', None)
-    sql = '''    requête admin_type_article_2   '''
-    tuple_delete=(id_utilisateur,id_article,date_publication)
+    sql = '''    requête admin_type_boisson_2   '''
+    tuple_delete=(id_utilisateur,id_boisson,date_publication)
     get_db().commit()
-    return redirect('/admin/article/commentaires?id_article='+id_article)
+    return redirect('/admin/boisson/commentaires?id_boisson='+id_boisson)
 
 
-@admin_commentaire.route('/admin/article/commentaires/repondre', methods=['POST','GET'])
+@admin_commentaire.route('/admin/boisson/commentaires/repondre', methods=['POST','GET'])
 def admin_comment_add():
     if request.method == 'GET':
         id_utilisateur = request.args.get('id_utilisateur', None)
-        id_article = request.args.get('id_article', None)
+        id_boisson = request.args.get('id_boisson', None)
         date_publication = request.args.get('date_publication', None)
-        return render_template('admin/article/add_commentaire.html',id_utilisateur=id_utilisateur,id_article=id_article,date_publication=date_publication )
+        return render_template('admin/boisson/add_commentaire.html',id_utilisateur=id_utilisateur,id_boisson=id_boisson,date_publication=date_publication )
 
     mycursor = get_db().cursor()
     id_utilisateur = session['id_user']   #1 admin
-    id_article = request.form.get('id_article', None)
+    id_boisson = request.form.get('id_boisson', None)
     date_publication = request.form.get('date_publication', None)
     commentaire = request.form.get('commentaire', None)
-    sql = '''    requête admin_type_article_3   '''
+    sql = '''    requête admin_type_boisson_3   '''
     get_db().commit()
-    return redirect('/admin/article/commentaires?id_article='+id_article)
+    return redirect('/admin/boisson/commentaires?id_boisson='+id_boisson)
 
 
-@admin_commentaire.route('/admin/article/commentaires/valider', methods=['POST','GET'])
+@admin_commentaire.route('/admin/boisson/commentaires/valider', methods=['POST','GET'])
 def admin_comment_valider():
-    id_article = request.args.get('id_article', None)
+    id_boisson = request.args.get('id_boisson', None)
     mycursor = get_db().cursor()
-    sql = '''   requête admin_type_article_4   '''
+    sql = '''   requête admin_type_boisson_4   '''
     get_db().commit()
-    return redirect('/admin/article/commentaires?id_article='+id_article)
+    return redirect('/admin/boisson/commentaires?id_boisson='+id_boisson)

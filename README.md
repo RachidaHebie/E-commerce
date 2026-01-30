@@ -25,9 +25,9 @@
 ## **3. Base de données (SQL)**
 - [ ] **Créer le script SQL** (`sae_sql.sql`) :
   - Inclure la création de toutes les tables du MLD.
-  - Ajouter un jeu de test réaliste (minimum 15 articles, 4 types d’articles).
-  - Les articles doivent avoir des colonnes variées (prix, description, stock, etc.).
-- [ ] **Trouver 15 images réalistes et attractives** pour les articles (pas de doublons).
+  - Ajouter un jeu de test réaliste (minimum 15 boissons, 4 types d’boissons).
+  - Les boissons doivent avoir des colonnes variées (prix, description, stock, etc.).
+- [ ] **Trouver 15 images réalistes et attractives** pour les boissons (pas de doublons).
 - [ ] **Intégrer les images** dans le projet (ex : dossier `static/images`).
 - [ ] **Vérifier la qualité du jeu de test** : données cohérentes et crédibles.
 
@@ -36,7 +36,7 @@
 ## **4. Application Flask**
 - [ ] **Copier le système d’authentification** vu en TD :
   - Utilisateurs par défaut : "client" (mdp: "client"), "client2" (mdp: "client2"), "admin" (mdp: "admin").
-- [ ] **Afficher les articles et types d’articles** depuis la base de données.
+- [ ] **Afficher les boissons et types d’boissons** depuis la base de données.
 - [ ] **Créer la route `/base/init`** :
   - Fonctionnalité : supprime et recrée les tables, puis insère les enregistrements (fixtures).
 - [ ] **Tester localement** l’application avant le déploiement.
@@ -53,7 +53,7 @@
   - Vérifier que les tables et données sont bien créées.
 - [ ] **Tester l’application** sur PythonAnywhere :
   - Vérifier l’authentification.
-  - Vérifier l’affichage des articles et types d’articles.
+  - Vérifier l’affichage des boissons et types d’boissons.
   - Vérifier la route `/base/init`.
 
 ---
