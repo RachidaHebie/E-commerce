@@ -15,7 +15,7 @@ boissons (tableau de dictionnaires)
 
 {% block body %}
 <h3>boisson</h3>
-<a  class="btn btn-outline-success" href="/admin/boisson/add">ajouter un boisson</a>
+<a  class="btn btn-outline-success" href="/admin/boisson/add">ajouter une boisson</a>
 <br><br>
 {#{{ boissons }}#}
 <table class="table">
@@ -29,10 +29,10 @@ boissons (tableau de dictionnaires)
     {% if boissons | length >= 1 %}
         {% for ligne in boissons %}
            <tr>
-                  <td>{{ ligne.nom }}</td>
+                  <td>{{ ligne.nom_boisson }}</td>
                   <td>{{ ligne.id_boisson }}</td>
-                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.type_boisson_id }})</td>
-                  <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix) }}</td>
+                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.id_type_boisson }})</td>
+                  <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix_boisson) }}</td>
                   <td>
                   {% if ligne.stock is defined %}
                      {% if ligne.stock != None  %}
