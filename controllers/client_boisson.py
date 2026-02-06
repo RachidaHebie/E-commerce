@@ -24,7 +24,7 @@ def client_boisson_show():                                 # remplace client_ind
 
     # utilisation du filtre
     sql3=''' SELECT * FROM ligne_panier
-            INNER JOIN boisson ON boisson.id_boisson = ligne_panier.id_boisson'''
+            INNER JOIN boisson ON boisson.id_boisson = ligne_panier.id_boisson;'''
 
 
 
