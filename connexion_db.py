@@ -48,3 +48,39 @@ def activate_db_options(db):
         else :
             print('MYSQL : variable globale lower_case_table_names=0  ok')    # mettre en commentaire
     cursor.close()
+
+
+
+
+
+
+#--------- Mettre en commentaire pour lili et Matteo --------
+
+'''def activate_db_options(db):
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SHOW VARIABLES LIKE 'sql_mode'")
+        result = cursor.fetchone()
+        if result:
+            modes = result['Value'].split(',')
+            if 'ONLY_FULL_GROUP_BY' not in modes:
+                cursor.execute("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))")
+                db.commit()
+    except Exception as e:
+        print(f"Erreur lors du réglage sql_mode : {e}")
+
+
+    try:
+        cursor.execute("SHOW VARIABLES LIKE 'lower_case_table_names'")
+        result = cursor.fetchone()
+        if result:
+            val = result['Value']
+            if val == '0':
+                print("MYSQL : Casse des tables respectée (Style Linux/Production)")
+            else:
+                print(f"MYSQL : Casse des tables ignorée (Style Windows, valeur: {val})")
+    except Exception as e:
+        print(f"Erreur lors de la lecture des variables système : {e}")
+
+    cursor.close()'''
