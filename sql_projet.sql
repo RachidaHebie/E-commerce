@@ -70,7 +70,7 @@ CREATE TABLE commande(
 CREATE TABLE ligne_commande(
                                id_boisson INT,
                                id_commande INT,
-                               quantite_commande VARCHAR(50),
+                               quantite_commande INT,
                                date_commande DATETIME,
                                PRIMARY KEY(id_boisson, id_commande),
                                FOREIGN KEY(id_boisson) REFERENCES boisson(id_boisson),
@@ -114,10 +114,9 @@ INSERT INTO utilisateur (id_utilisateur, nom, prenom, login, email, password, ro
                                                                                                                       'ROLE_client','1','01-01-2001');
 
 INSERT INTO etat (libelle_etat) VALUES
-                                    ('En attente'),
-                                    ('En cours'),
                                     ('Livrée'),
-                                    ('Annulée');
+                                    ('En cours');
+
 
 -- Jus
 INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, volume, description, image, stock, id_type_boisson, id_fruit) VALUES
@@ -144,9 +143,9 @@ INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, 
 
 
 INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
-                                                                                 ('2026-01-23 10:00:00', 15.50, 2, 1),
-                                                                                 ('2026-01-22 15:30:00', 8.75, 3, 2),
-                                                                                 ('2026-01-21 12:45:00', 22.00, 1, 3);
+                                                                                 ('2026-01-23 10:00:00', 15.50, 2, 2),
+                                                                                 ('2026-01-22 15:30:00', 8.75, 2, 2),
+                                                                                 ('2026-01-21 12:45:00', 22.00, 1, 2);
 
 
 
@@ -162,3 +161,5 @@ INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creatio
                                                                                               (3, 1, 1, '2026-01-23 09:45:00'),
                                                                                               (8, 2, 2, '2026-01-22 15:20:00'),
                                                                                               (10, 3, 1, '2026-01-21 12:30:00');
+
+

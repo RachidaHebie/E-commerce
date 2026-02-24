@@ -66,15 +66,32 @@ def client_commande_add():
 def client_commande_show():
     mycursor = get_db().cursor()
     id_client = session['id_user']
-    sql = '''  selection des commandes ordonnées par état puis par date d'achat descendant '''
-    commandes = []
 
+    # selection des commandes ordonnées par état puis par date d'achat descendant
+    sql = '''Select * , (SELECT SUM(lc.quantite_commande)
+             FROM ligne_commande lc
+             WHERE lc.id_commande = commande.id_commande) AS nbr_boissons
+                from commande
+                LEFT JOIN etat on commande.id_etat = etat.id_etat
+                WHERE commande.id_utilisateur = %s
+                GROUP BY etat.id_etat, commande.date_commande, commande.id_commande;'''
+
+    mycursor.execute(sql, (id_client,))
+    commandes = mycursor.fetchall()
     boissons_commande = None
     commande_adresses = None
     id_commande = request.args.get('id_commande', None)
     if id_commande != None:
-        print(id_commande)
-        sql = ''' selection du détails d'une commande '''
+        print("id_commande : ", id_commande)
+        # selection du détails d'une commande
+        sql = ''' select *, (prix_boisson * quantite_commande) as prix_ligne
+                    from ligne_commande
+                    join commande on ligne_commande.id_commande = commande.id_commande
+                    join boisson on ligne_commande.id_boisson = boisson.id_boisson
+                    where commande.id_commande = %s; '''
+
+        mycursor.execute(sql, (id_commande,))
+        boissons_commande = mycursor.fetchall()
 
         # partie 2 : selection de l'adresse de livraison et de facturation de la commande selectionnée
         sql = ''' selection des adressses '''

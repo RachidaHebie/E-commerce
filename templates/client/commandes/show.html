@@ -10,7 +10,7 @@
                 <tbody>
                         {% for ligne in boissons_commande %}
                             <tr>
-                                <td>{{ ligne.nom }}
+                                <td>{{ ligne.nom_boisson }}
                                 {% if ligne.nb_declinaisons is defined and ligne.nb_declinaisons > 1 %}
                                     <span style="color:rgba(255,197,197,0.6);"> ( {{ ligne.nb_declinaisons }} declinaisons )</span>
                                     <span style="color:#6dcea2">
@@ -25,8 +25,8 @@
                                     </span>
                                 {% endif %}
                                 </td>
-                                <td>{{ ligne.quantite }}</td>
-                                <td>{{ ligne.prix }} €</td>
+                                <td>{{ ligne.quantite_commande }}</td>
+                                <td>{{ ligne.prix_boisson }} €</td>
                                 <td>{{ ligne.prix_ligne }} €  </td>
                             </tr>
                         {% endfor %}
@@ -56,7 +56,7 @@
                         <thead>
                         <tr>
                             <th>Date de commande</th>
-                            <th>Nombre d'boissons</th>
+                            <th>Nombre de boissons</th>
                             <th>Coût total</th>
                             <th>Etat de la commande</th>
                             <th style="text-align: center;">Options</th>
@@ -64,18 +64,18 @@
                         </thead>
                         <tbody>
                         {% for commande in commandes %}
-                            <tr id="" {% if commande.etat_id == 1 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
-                                <td>{{ commande.date_achat.strftime('%d-%m-%Y') }}</td>
+                            <tr id="" {% if commande.id_etat == 1 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
+                                <td>{{ commande.date_commande.strftime('%d-%m-%Y') }}</td>
                                 <td> {{ commande.nbr_boissons }} </td>
                                 <td>
-                                    {{ "{:,.2f} €".format(commande.prix_total) }}
+                                    {{ "{:,.2f} €".format(commande.montant_total) }}
                                 </td>
                                 <td style="text-align: center;">
-                                    {% if commande.etat_id == 1 %} <div style="background-color: #ba8b00; padding: 5px;">
-                                     {{ commande.libelle }}
+                                    {% if commande.id_etat == 1 %} <div style="background-color: #34ce57; padding: 5px;">
+                                     {{ commande.libelle_etat }}
                                     </div>
-                                    {% else %} <div style="background-color: #34ce57; padding: 5px;">
-                                        {{ commande.libelle }} </div>
+                                    {% else %} <div style="background-color: #ba8b00; padding: 5px;">
+                                        {{ commande.libelle_etat }} </div>
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center;">
