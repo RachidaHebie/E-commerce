@@ -28,11 +28,19 @@ def show_boisson():
 def add_boisson():
     mycursor = get_db().cursor()
 
-    return render_template('admin/boisson/add_boisson.html'
-                           #,types_boisson=type_boisson,
-                           #,couleurs=colors
-                           #,tailles=tailles
-                            )
+    sql = "SELECT id_type_boisson, nom_type_boisson FROM type_boisson ORDER BY nom_type_boisson;"
+    mycursor.execute(sql)
+    types_boisson = mycursor.fetchall()
+
+
+    sql = "SELECT id_fruit, nom_fruit FROM fruit ORDER BY nom_fruit;"
+    mycursor.execute(sql)
+    fruits = mycursor.fetchall()
+
+
+    return render_template('admin/boisson/add_boisson.html',
+                           types_boisson=types_boisson,
+                           fruits=fruits)
 
 
 @admin_boisson.route('/admin/boisson/add', methods=['POST'])
@@ -40,7 +48,8 @@ def valid_add_boisson():
     mycursor = get_db().cursor()
 
     nom = request.form.get('nom', '')
-    type_boisson_id = request.form.get('type_boisson_id', '')
+    id_fruit = request.form.get('id_fruit', '')
+    id_type_boisson = request.form.get('id_type_boisson', '')
     prix = request.form.get('prix', '')
     description = request.form.get('description', '')
     image = request.files.get('image', '')
@@ -52,16 +61,20 @@ def valid_add_boisson():
         print("erreur")
         filename=None
 
-    sql = '''  requête admin_boisson_2 '''
+    sql = '''
+          INSERT INTO boisson (nom_boisson, image, prix_boisson, id_type_boisson,id_fruit
+                                `description` )
+          VALUES (%s, %s, %s, %s, %s,%s) 
+          '''
 
-    tuple_add = (nom, filename, prix, type_boisson_id, description)
+    tuple_add = (nom, filename, prix, id_type_boisson,id_fruit, description)
     print(tuple_add)
     mycursor.execute(sql, tuple_add)
     get_db().commit()
 
-    print(u'boisson ajouté , nom: ', nom, ' - type_boisson:', type_boisson_id, ' - prix:', prix,
+    print(u'boisson ajouté , nom: ', nom, ' - type_boisson:', id_type_boisson, ' - prix:', prix,
           ' - description:', description, ' - image:', image)
-    message = u'boisson ajouté , nom:' + nom + '- type_boisson:' + type_boisson_id + ' - prix:' + prix + ' - description:' + description + ' - image:' + str(
+    message = u'boisson ajouté , nom:' + nom + '- type_boisson:' + id_type_boisson + ' - prix:' + prix + ' - description:' + description + ' - image:' + str(
         image)
     flash(message, 'alert-success')
     return redirect('/admin/boisson/show')
