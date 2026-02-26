@@ -162,12 +162,6 @@ INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creatio
                                                                                               (8, 2, 2, '2026-01-22 15:20:00'),
                                                                                               (10, 3, 1, '2026-01-21 12:30:00');
 
-SELECT ligne_panier.* , boisson.* FROM ligne_panier
-Join commande on ligne_panier.id_commande = commande.id_commande
-join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-join boisson on ligne_panier.id_boisson = boisson.id_boisson
-where u.id_utilisateur = 2;
-
 DELETE FROM ligne_panier
 WHERE id_boisson = 8;
 
@@ -189,17 +183,6 @@ FOREIGN KEY (id_boisson)
 REFERENCES boisson(id_boisson)
 ON DELETE CASCADE;
 
-SELECT ligne_panier.*, boisson.*, (boisson.prix_boisson * ligne_panier.quantite_panier) AS prix_total FROM ligne_panier
-            Join commande on ligne_panier.id_commande = commande.id_commande
-            join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-            join boisson on ligne_panier.id_boisson = boisson.id_boisson
-            where u.id_utilisateur = 2;
-
-SELECT SUM(boisson.prix_boisson * ligne_panier.quantite_panier) AS prix_total FROM ligne_panier
-            Join commande on ligne_panier.id_commande = commande.id_commande
-            join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-            join boisson on ligne_panier.id_boisson = boisson.id_boisson
-            where u.id_utilisateur = 2;
 ALTER TABLE ligne_panier
 DROP FOREIGN KEY ligne_panier_ibfk_1;
 
