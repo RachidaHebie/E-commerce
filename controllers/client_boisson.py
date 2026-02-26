@@ -59,7 +59,15 @@ def client_boisson_show():
     mycursor.execute(sql, params)
     boissons = mycursor.fetchall()
 
-    boissons_panier = []
+
+    sql = """SELECT ligne_panier.*, boisson.*, (boisson.prix_boisson * ligne_panier.quantite_panier) AS prix_total FROM ligne_panier
+            Join commande on ligne_panier.id_commande = commande.id_commande
+            join utilisateur u on commande.id_utilisateur = u.id_utilisateur
+            join boisson on ligne_panier.id_boisson = boisson.id_boisson
+            where u.id_utilisateur = %s;"""
+
+    mycursor.execute(sql, id_client)
+    boissons_panier = mycursor.fetchall()
     prix_total = None
 
     return render_template(

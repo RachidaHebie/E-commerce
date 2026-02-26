@@ -86,12 +86,22 @@ def client_panier_vider():
 def client_panier_delete_line():
     mycursor = get_db().cursor()
     id_client = session['id_user']
+    id_boisson = request.form.get('id_boisson','')
     #id_declinaison_boisson = request.form.get('id_declinaison_boisson')
+    # selection de ligne du panier
+    sql = ''' SELECT ligne_panier.* FROM ligne_panier
+                Join commande on ligne_panier.id_commande = commande.id_commande
+                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
+                where u.id_utilisateur = %s; '''
 
-    sql = ''' selection de ligne du panier '''
+    mycursor.execute(sql, (id_client,))
 
-    sql = ''' suppression de la ligne du panier '''
+
+    # suppression de la ligne du panier
+    sql = ''' DELETE FROM ligne_panier WHERE id_boisson = %s; '''
     sql2=''' mise à jour du stock de l'boisson : stock = stock + qté de la ligne pour l'boisson'''
+
+    mycursor.execute(sql, (id_boisson,))
 
     get_db().commit()
     return redirect('/client/boisson/show')
