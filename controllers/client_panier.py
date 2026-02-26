@@ -15,7 +15,75 @@ def client_panier_add():
     id_client = session['id_user']
     id_boisson = request.form.get('id_boisson')
     quantite = request.form.get('quantite')
-    # ---------
+    
+    sql = '''
+    SELECT stock
+    FROM boisson
+    WHERE id_boisson = %s;
+    '''
+
+    mycursor.execute(sql, (id_boisson,))
+    stock = mycursor.fetchone()
+
+    if int(stock['stock']) >= int(quantite):
+        # On verifie si le panier existe déjà
+        mycursor.execute("""
+            SELECT id_commande
+            FROM commande
+            WHERE id_utilisateur = %s
+            AND id_etat = 1
+            """, (id_client,))
+
+        commande = mycursor.fetchone()
+
+        if not commande:
+            mycursor.execute("""
+                INSERT INTO commande(date_commande, montant_total, id_etat, id_utilisateur)
+                VALUES (NOW(), 0, 1, %s)
+                """, (id_client,))
+            id_commande = mycursor.lastrowid
+
+        else:
+            id_commande = commande['id_commande']
+
+
+        # On verifie si la ligne existe déjà
+        mycursor.execute("""
+            SELECT quantite_panier
+            FROM ligne_panier
+            WHERE id_boisson = %s AND id_commande = %s
+            """, (id_boisson, id_commande))
+
+        ligne = mycursor.fetchone()
+
+        # Update si la ligne existe
+        if ligne:
+            mycursor.execute("""
+                UPDATE ligne_panier
+                SET quantite_panier = quantite_panier + %s
+                WHERE id_boisson = %s AND id_commande = %s
+            """, (quantite, id_boisson, id_commande))
+
+        # On creer une ligne si elle n'existe pas
+        else:
+            mycursor.execute("""
+                INSERT INTO ligne_panier(id_boisson, id_commande, quantite_panier, date_creation_panier)
+                VALUES (%s, %s, %s, NOW())
+                """, (id_boisson, id_commande, quantite))
+            
+        get_db().commit()
+
+        # On retire le stock
+        nouveau_stock = int(stock['stock']) - int(quantite)
+
+        sql = '''
+        UPDATE boisson
+        SET stock = %s
+        WHERE id_boisson = %s;'''
+
+        mycursor.execute(sql, (nouveau_stock, id_boisson))
+        get_db().commit()
+
     #id_declinaison_boisson=request.form.get('id_declinaison_boisson',None)
     id_declinaison_boisson = 1
 
