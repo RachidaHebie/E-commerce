@@ -48,7 +48,7 @@ def activate_db_options(db):
         else :
             print('MYSQL : variable globale lower_case_table_names=0  ok')    # mettre en commentaire
     cursor.close()
-
+'''
 
 
 
@@ -56,7 +56,7 @@ def activate_db_options(db):
 
 #--------- Mettre en commentaire pour lili et Matteo --------
 
-'''def activate_db_options(db):
+def activate_db_options(db):
     cursor = db.cursor()
 
     try:
