@@ -11,7 +11,7 @@
                     </tr>
                     {% for item_panier in boissons_panier %}
                         <tr>
-                            <td>{{item_panier.nom}}
+                            <td>{{item_panier.nom_boisson}}
                             {% if item_panier.id_couleur is defined and item_panier.id_couleur != None and item_panier.id_couleur >1 %}
                                 <small style="color: #6dcea2">({{ item_panier.libelle_couleur }})</small>
                             {% endif %}
@@ -19,9 +19,9 @@
                                 <small style="color: #d941c2">({{ item_panier.libelle_taille }})</small>
                             {% endif %}
                             </td>
-                            <td>{{item_panier.quantite}}</td>
-                            <td>{{item_panier.prix}}</td>
-                            <td>{{ "{:,.2f} €".format((item_panier.prix * item_panier.quantite)) }}{#{(panier.boisson.prix * panier.quantite)|number_format(2) }#}</td>
+                            <td>{{item_panier.quantite_panier}}</td>
+                            <td>{{item_panier.prix_boisson}}</td>
+                            <td>{{ "{:,.2f} €".format((item_panier.prix_boisson * item_panier.quantite_panier)) }}{#{(panier.boisson.prix * panier.quantite)|number_format(2) }#}</td>
                             <td>
 {# #}                            {% if item_panier.stock is defined %}
 {# #}                               {% if item_panier.stock > 0 %}

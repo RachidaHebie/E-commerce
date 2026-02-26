@@ -87,7 +87,7 @@ def fct_fixtures_load():
     sql='''CREATE TABLE ligne_commande(
                                           id_boisson INT,
                                           id_commande INT,
-                                          quantite_commande VARCHAR(50),
+                                          quantite_commande INT,
                                           date_commande DATETIME,
                                           PRIMARY KEY(id_boisson, id_commande),
                                           FOREIGN KEY(id_boisson) REFERENCES boisson(id_boisson),
@@ -98,7 +98,7 @@ def fct_fixtures_load():
     sql='''CREATE TABLE ligne_panier(
                                         id_boisson INT,
                                         id_commande INT,
-                                        quantite_panier VARCHAR(50),
+                                        quantite_panier INT,
                                         date_creation_panier VARCHAR(50),
                                         PRIMARY KEY(id_boisson, id_commande),
                                         FOREIGN KEY(id_boisson) REFERENCES boisson(id_boisson),
@@ -192,6 +192,7 @@ def fct_fixtures_load():
                                                                                                       (10, 3, 1, '2026-01-21 12:30:00'); 
 
         '''
+    mycursor.execute(sql)
 
 
     get_db().commit()

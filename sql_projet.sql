@@ -80,7 +80,7 @@ CREATE TABLE ligne_commande(
 CREATE TABLE ligne_panier(
                              id_boisson INT,
                              id_commande INT,
-                             quantite_panier VARCHAR(50),
+                             quantite_panier INT,
                              date_creation_panier VARCHAR(50),
                              PRIMARY KEY(id_boisson, id_commande),
                              FOREIGN KEY(id_boisson) REFERENCES boisson(id_boisson),
@@ -162,6 +162,8 @@ INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creatio
                                                                                               (8, 2, 2, '2026-01-22 15:20:00'),
                                                                                               (10, 3, 1, '2026-01-21 12:30:00');
 
+DELETE FROM ligne_panier
+WHERE id_boisson = 8;
 
 ALTER TABLE boisson
 DROP FOREIGN KEY boisson_ibfk_1;
