@@ -163,3 +163,29 @@ INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creatio
                                                                                               (10, 3, 1, '2026-01-21 12:30:00');
 
 
+ALTER TABLE boisson
+DROP FOREIGN KEY boisson_ibfk_1;
+
+ALTER TABLE boisson
+ADD CONSTRAINT fk_boisson_type
+FOREIGN KEY (id_type_boisson)
+REFERENCES type_boisson(id_type_boisson)
+ON DELETE CASCADE;
+
+ALTER TABLE ligne_commande
+DROP FOREIGN KEY ligne_commande_ibfk_1;
+
+ALTER TABLE ligne_commande
+ADD CONSTRAINT fk_ligne_commande_boisson
+FOREIGN KEY (id_boisson)
+REFERENCES boisson(id_boisson)
+ON DELETE CASCADE;
+
+ALTER TABLE ligne_panier
+DROP FOREIGN KEY ligne_panier_ibfk_1;
+
+ALTER TABLE ligne_panier
+ADD CONSTRAINT fk_ligne_panier_boisson
+FOREIGN KEY (id_boisson)
+REFERENCES boisson(id_boisson)
+ON DELETE CASCADE;

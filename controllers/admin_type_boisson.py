@@ -11,7 +11,10 @@ admin_type_boisson = Blueprint('admin_type_boisson', __name__,
 @admin_type_boisson.route('/admin/type-boisson/show')
 def show_type_boisson():
     mycursor = get_db().cursor()
-    sql = '''  SELECT *  from type_boisson;       '''
+    sql = '''  SELECT t.id_type_boisson, t.nom_type_boisson, COUNT(b.id_boisson) AS nbr_boissons
+        FROM type_boisson t
+        LEFT JOIN boisson b ON t.id_type_boisson = b.id_type_boisson
+        GROUP BY t.id_type_boisson, t.nom_type_boisson;   '''
     mycursor.execute(sql)
     types_boisson = mycursor.fetchall()
 
@@ -23,43 +26,52 @@ def add_type_boisson():
 
 @admin_type_boisson.route('/admin/type-boisson/add', methods=['POST'])
 def valid_add_type_boisson():
-    libelle = request.form.get('libelle', '')
-    tuple_insert = (libelle,)
+    nom_type_boisson = request.form.get('nom_type_boisson', '')
+    tuple_insert = (nom_type_boisson,)
     mycursor = get_db().cursor()
-    sql = '''         '''
+    sql = "insert into type_boisson (nom_type_boisson) values (%s)"
     mycursor.execute(sql, tuple_insert)
     get_db().commit()
-    message = u'type ajouté , libellé :'+libelle
+    message = u'type ajouté , libellé :'+nom_type_boisson
     flash(message, 'alert-success')
     return redirect('/admin/type-boisson/show') #url_for('show_type_boisson')
 
 @admin_type_boisson.route('/admin/type-boisson/delete', methods=['GET'])
 def delete_type_boisson():
     id_type_boisson = request.args.get('id_type_boisson', '')
+
     mycursor = get_db().cursor()
 
-    flash(u'suppression type boisson , id : ' + id_type_boisson, 'alert-success')
+    sql = '''
+        DELETE FROM type_boisson
+        WHERE id_type_boisson = %s
+    '''
+    mycursor.execute(sql, (id_type_boisson,))
+    get_db().commit()
+
+    flash(u'Suppression type boisson, id : ' + id_type_boisson, 'alert-success')
     return redirect('/admin/type-boisson/show')
 
 @admin_type_boisson.route('/admin/type-boisson/edit', methods=['GET'])
 def edit_type_boisson():
     id_type_boisson = request.args.get('id_type_boisson', '')
     mycursor = get_db().cursor()
-    sql = '''   '''
+    sql = ''' select id_type_boisson,nom_type_boisson from type_boisson where id_type_boisson = %s;  '''
     mycursor.execute(sql, (id_type_boisson,))
     type_boisson = mycursor.fetchone()
     return render_template('admin/type_boisson/edit_type_boisson.html', type_boisson=type_boisson)
 
 @admin_type_boisson.route('/admin/type-boisson/edit', methods=['POST'])
 def valid_edit_type_boisson():
-    libelle = request.form['libelle']
-    id_type_boisson = request.form.get('id_type_boisson', '')
-    tuple_update = (libelle, id_type_boisson)
     mycursor = get_db().cursor()
-    sql = '''   '''
+    nom_type_boisson = request.form['nom_type_boisson']
+    id_type_boisson = request.form.get('id_type_boisson', '')
+    tuple_update = (nom_type_boisson, id_type_boisson)
+
+    sql = '''update type_boisson set nom_type_boisson=%s where id_type_boisson = %s    '''
     mycursor.execute(sql, tuple_update)
     get_db().commit()
-    flash(u'type boisson modifié, id: ' + id_type_boisson + " libelle : " + libelle, 'alert-success')
+    flash(u'type boisson modifié, id: ' + id_type_boisson + " libelle : " + nom_type_boisson, 'alert-success')
     return redirect('/admin/type-boisson/show')
 
 
