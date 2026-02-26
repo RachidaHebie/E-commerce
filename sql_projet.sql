@@ -171,6 +171,23 @@ where u.id_utilisateur = 2;
 DELETE FROM ligne_panier
 WHERE id_boisson = 8;
 
+ALTER TABLE boisson
+DROP FOREIGN KEY boisson_ibfk_1;
+
+ALTER TABLE boisson
+ADD CONSTRAINT fk_boisson_type
+FOREIGN KEY (id_type_boisson)
+REFERENCES type_boisson(id_type_boisson)
+ON DELETE CASCADE;
+
+ALTER TABLE ligne_commande
+DROP FOREIGN KEY ligne_commande_ibfk_1;
+
+ALTER TABLE ligne_commande
+ADD CONSTRAINT fk_ligne_commande_boisson
+FOREIGN KEY (id_boisson)
+REFERENCES boisson(id_boisson)
+ON DELETE CASCADE;
 
 SELECT ligne_panier.*, boisson.*, (boisson.prix_boisson * ligne_panier.quantite_panier) AS prix_total FROM ligne_panier
             Join commande on ligne_panier.id_commande = commande.id_commande
@@ -183,3 +200,11 @@ SELECT SUM(boisson.prix_boisson * ligne_panier.quantite_panier) AS prix_total FR
             join utilisateur u on commande.id_utilisateur = u.id_utilisateur
             join boisson on ligne_panier.id_boisson = boisson.id_boisson
             where u.id_utilisateur = 2;
+ALTER TABLE ligne_panier
+DROP FOREIGN KEY ligne_panier_ibfk_1;
+
+ALTER TABLE ligne_panier
+ADD CONSTRAINT fk_ligne_panier_boisson
+FOREIGN KEY (id_boisson)
+REFERENCES boisson(id_boisson)
+ON DELETE CASCADE;
