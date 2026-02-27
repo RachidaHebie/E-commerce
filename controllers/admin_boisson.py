@@ -156,38 +156,48 @@ def edit_boisson():
 @admin_boisson.route('/admin/boisson/edit', methods=['POST'])
 def valid_edit_boisson():
     mycursor = get_db().cursor()
-    nom_boisson = request.form.get('nom_boisson')
+
     id_boisson = request.form.get('id_boisson')
-    image = request.files.get('image', '')
-    id_type_boisson = request.form.get('id_type_boisson', '')
-    prix_boisson= request.form.get('prix_boisson', '')
+    nom_boisson = request.form.get('nom_boisson')
+    id_type_boisson = request.form.get('id_type_boisson')
+    prix_boisson = request.form.get('prix_boisson')
     description = request.form.get('description')
     stock = request.form.get('stock')
-    sql = '''
-        UPDATE boisson SET nom_boisson= %s, id_boisson = %s, prix_boisson= %s,description= %s, stock = %s, image = %s,id_type_boisson=%s
-          WHERE id = %s 
-       '''
-    mycursor.execute(sql, id_boisson)
-    image_nom = mycursor.fetchone()
-    image_nom = image_nom['image']
-    if image:
-        if image_nom != "" and image_nom is not None and os.path.exists(
-                os.path.join(os.getcwd() + "/static/images/", image_nom)):
-            os.remove(os.path.join(os.getcwd() + "/static/images/", image_nom))
-        # filename = secure_filename(image.filename)
-        if image:
-            filename = 'img_upload_' + str(int(2147483647 * random())) + '.png'
-            image.save(os.path.join('static/images/', filename))
-            image_nom = filename
+    image = request.files.get('image')
 
-    sql = '''  requête admin_boisson_9 '''
-    mycursor.execute(sql, (nom_boisson, image_nom, prix_boisson, id_type_boisson, description, id_boisson,stock))
 
+    sql_select = "SELECT image FROM boisson WHERE id_boisson = %s"
+    mycursor.execute(sql_select, (id_boisson,))
+    boisson_actuelle = mycursor.fetchone()
+    image_nom = boisson_actuelle['image'] if boisson_actuelle else None
+
+
+    if image and image.filename != '':
+        if image_nom:
+            ancien_chemin = os.path.join('static/images/', image_nom)
+            if os.path.exists(ancien_chemin):
+                os.remove(ancien_chemin)
+
+        filename = 'img_upload_' + str(int(2147483647 * random())) + '.png'
+        image.save(os.path.join('static/images/', filename))
+        image_nom = filename
+
+    sql_update = '''
+        UPDATE boisson 
+        SET nom_boisson = %s, 
+            prix_boisson = %s, 
+            description = %s, 
+            stock = %s, 
+            image = %s, 
+            id_type_boisson = %s
+        WHERE id_boisson = %s
+    '''
+    params = (nom_boisson, prix_boisson, description, stock, image_nom, id_type_boisson, id_boisson)
+
+    mycursor.execute(sql_update, params)
     get_db().commit()
-    if image_nom is None:
-        image_nom = ''
-    message = u'boisson modifié , nom:' + nom_boisson + '- type_boisson :' + id_type_boisson + ' - prix:' + prix_boisson  + ' - image:' + image + ' - description: ' + description
-    flash(message, 'alert-success')
+
+    flash(f"Boisson '{nom_boisson}' modifiée avec succès", 'alert-success')
     return redirect('/admin/boisson/show')
 
 

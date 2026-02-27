@@ -31,9 +31,15 @@ boissons (tableau de dictionnaires)
            <tr>
                   <td>{{ ligne.nom_boisson }}</td>
                   <td>{{ ligne.id_boisson }}</td>
-                  <td><span style="color: red">{{ ligne.libelle }}</span> ({{ ligne.id_type_boisson }})</td>
-                  <td>{#{ ligne.prix }#}  {{  "{:,.2f} €".format(ligne.prix_boisson) }}</td>
-                  <td>
+                  <td><span style="color: red">{{ ligne.nom_boisson }}</span> ({{ ligne.id_type_boisson }})</td>
+                 <td>
+                    {% if ligne.prix_boisson is not none %}
+                        {{ "{:,.2f} €".format(ligne.prix_boisson) }}
+                    {% else %}
+                        <span class="text-muted">0.00 €</span>
+                    {% endif %}
+                </td>
+                                  <td>
                   {% if ligne.stock is defined %}
                      {% if ligne.stock != None  %}
                         {% if ligne.stock > 0 %}
