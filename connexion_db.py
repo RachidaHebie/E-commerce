@@ -24,7 +24,7 @@ def get_db():
         activate_db_options(db)
     return db
 
-def activate_db_options(db):
+'''def activate_db_options(db):
     cursor = db.cursor()
     # Vérifier et activer l'option ONLY_FULL_GROUP_BY si nécessaire
     cursor.execute("SHOW VARIABLES LIKE 'sql_mode'")
@@ -83,4 +83,4 @@ def activate_db_options(db):
     except Exception as e:
         print(f"Erreur lors de la lecture des variables système : {e}")
 
-    cursor.close()'''
+    cursor.close()

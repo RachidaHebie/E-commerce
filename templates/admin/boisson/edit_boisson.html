@@ -17,7 +17,7 @@ types_boisson : tableau de dictionnaires
 {% endblock %}
 
 {% block body %}
-    <h2>modifier un boisson</h2>
+    <h2>modifier une boisson</h2>
         <div class="row mt-5">
         {%  if boisson.image is not none %}
             <img class="card-img-top rounded mx-4 d-block"  style="width:200px; height:200px; border: 1px solid black; padding: 25px;"   id="img_output" src="{{ url_for('static', filename = 'images/') }}{{ boisson.image}}"  alt="image  de {{ boisson.nom }}" >
@@ -26,26 +26,32 @@ types_boisson : tableau de dictionnaires
                 <form class="w-190" method="post" action="/admin/boisson/edit" enctype="multipart/form-data">
                     <input type="hidden" value="{{ boisson.id_boisson }}" name="id_boisson">
                     <label for="nom">Nom :
-                        <input name="nom" type="text" value="{{ boisson.nom }}" class="form-control">
+                        <input name="nom" type="text" value="{{ boisson.nom_boisson }}" class="form-control">
                     </label>
                     <label for="prix" > Prix (€) :
-                        <input name="prix" type="number" min="0.0" step="0.01" value="{{ boisson.prix }}" class="form-control" >
+                        <input name="prix" type="number" min="0.0" step="0.01" value="{{ boisson.prix_boisson}}" class="form-control" >
                     </label>
                     <label for="image">Image :                       {# à modifier #}
                         <input name="image"  onchange="loadFile(event)" type="file" class="form-control" value="{{ boisson.image }}">             {# à modifier #}
                     </label>                                         {# à modifier #}
 {#                https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask#}
 
-                <label for="type_boisson_id">Type de l'boisson :
-                    <select name="type_boisson_id" class="form-select">
-                            {% for type in types_boisson %}
-                                 <option value="{{ type.id_type_boisson }}" {% if type.id_type_boisson == boisson.type_boisson_id %} selected {% endif %}> {{ type.libelle }}</option>
-                            {% endfor %}
-                        </select>
-                    </label>
+                <label for="id_type_boisson">Type de l'boisson :
+                    <select name="id_type_boisson" required class="form-select">
+                        <option value="">Sélectionner un type de boisson</option>
+                        {% for type in type_boisson %}
+                             <option value="{{ type.id_type_boisson }}"> {{ type.nom_type_boisson }}</option>
+                        {% endfor %}
+                    </select>
+
                     <label for="description">Description :
                         <input name="description" type="text" value="{{ boisson.description }}" class="form-control">
                     </label>
+
+                </label>
+                    <label for="stock">stock:
+                    <input name="stock" type="numeric" value="{{ boisson.stock }}" class="form-control" >
+                </label>
                     <button class="btn btn-primary mt-2">
                                 Modifier
                     </button>
