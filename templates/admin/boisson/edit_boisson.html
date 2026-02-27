@@ -36,13 +36,18 @@ types_boisson : tableau de dictionnaires
                     </label>                                         {# à modifier #}
 {#                https://blog.miguelgrinberg.com/post/handling-file-uploads-with-flask#}
 
-                <label for="id_type_boisson">Type de l'boisson :
+
+                                    <label for="id_type_boisson">Type de boisson :
                     <select name="id_type_boisson" required class="form-select">
                         <option value="">Sélectionner un type de boisson</option>
                         {% for type in type_boisson %}
-                             <option value="{{ type.id_type_boisson }}"> {{ type.nom_type_boisson }}</option>
+                            <option value="{{ type.id_type_boisson }}"
+                                {% if type.id_type_boisson == boisson.id_type_boisson %} selected {% endif %}>
+                                {{ type.nom_type_boisson }}
+                            </option>
                         {% endfor %}
                     </select>
+</label>
 
                     <label for="description">Description :
                         <input name="description" type="text" value="{{ boisson.description }}" class="form-control">
