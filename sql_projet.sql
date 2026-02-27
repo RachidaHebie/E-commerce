@@ -196,3 +196,9 @@ ON DELETE CASCADE;
 SELECT boisson.nom_boisson FROM ligne_commande
           JOIN boisson ON boisson.id_boisson = ligne_commande.id_boisson
           WHERE boisson.id_type_boisson = 1;
+
+
+SELECT ligne_panier.* FROM ligne_panier
+                Join commande on ligne_panier.id_commande = commande.id_commande
+                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
+                where u.id_utilisateur = 2;
