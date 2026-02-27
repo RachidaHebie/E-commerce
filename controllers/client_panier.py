@@ -84,6 +84,9 @@ def client_panier_add():
         mycursor.execute(sql, (nouveau_stock, id_boisson))
         get_db().commit()
 
+    else:
+        flash("Stock insuffisant.", "warning")
+
     #id_declinaison_boisson=request.form.get('id_declinaison_boisson',None)
     id_declinaison_boisson = 1
 
