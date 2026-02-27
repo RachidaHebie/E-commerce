@@ -83,24 +83,39 @@ def valid_add_boisson():
 def delete_boisson():
     id_boisson=request.args.get('id_boisson')
     mycursor = get_db().cursor()
-    sql = ''' requête admin_boisson_3 '''
+    """sql = ''' requête admin_boisson_3 '''
     mycursor.execute(sql, id_boisson)
     nb_declinaison = mycursor.fetchone()
     if nb_declinaison['nb_declinaison'] > 0:
         message= u'il y a des declinaisons dans cet boisson : vous ne pouvez pas le supprimer'
-        flash(message, 'alert-warning')
+        flash(message, 'alert-warning')"""
+
+    sql = """SELECT id_commande FROM ligne_commande
+          WHERE id_boisson = %s;"""
+    mycursor.execute(sql, (id_boisson,))
+    presence_boisson = mycursor.fetchall()
+
+    if presence_boisson:
+        ids_commande = [str(commande['id_commande']) for commande in presence_boisson]
+        ids_str = ", ".join(ids_commande)
+        print("Impossible de supprimer la boisson, commande en cours : ", {ids_str})
+        message = f'Impossible de supprimer le type de boisson, commande en cours de id : ' + ids_str
+        flash(message, 'alert-danger')
+
     else:
-        sql = ''' requête admin_boisson_4 '''
+        sql = ''' SELECT * FROM boisson WHERE id_boisson = %s; '''
         mycursor.execute(sql, id_boisson)
         boisson = mycursor.fetchone()
         print(boisson)
         image = boisson['image']
 
-        sql = ''' requête admin_boisson_5  '''
+        sql = ''' DELETE FROM boisson WHERE id_boisson = %s;  '''
         mycursor.execute(sql, id_boisson)
         get_db().commit()
         if image != None:
-            os.remove('static/images/' + image)
+            #os.remove('static/images/' + image) # ajouter quand fini sinon ça va supprimer toutes nos images
+            flash("ok")
+
 
         print("un boisson supprimé, id :", id_boisson)
         message = u'un boisson supprimé, id : ' + id_boisson
