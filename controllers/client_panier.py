@@ -206,7 +206,7 @@ def client_panier_delete_line():
                 where u.id_utilisateur = %s; '''
 
     mycursor.execute(sql, (id_client,))
-<<<<<<< HEAD
+
     ligne_panier = mycursor.fetchone()
 
     # suppression de la ligne du panier
@@ -226,7 +226,7 @@ def client_panier_delete_line():
         WHERE id_boisson = %s;'''
 
     mycursor.execute(sql, (nouveau_stock, id_boisson))
-=======
+
 
     sql = """SELECT quantite_panier FROM ligne_panier WHERE id_boisson = %s"""
     mycursor.execute(sql, (id_boisson,))
@@ -243,7 +243,7 @@ def client_panier_delete_line():
     sql2=''' UPDATE boisson SET stock = %s WHERE id_boisson = %s; '''
     mycursor.execute(sql, (id_client,))
     mycursor.execute(sql2, (nouveau_stock,id_boisson,))
->>>>>>> refs/remotes/origin/main
+
 
     get_db().commit()
 
