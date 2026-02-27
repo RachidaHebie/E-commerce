@@ -68,12 +68,27 @@ def client_boisson_show():
 
     mycursor.execute(sql, id_client)
     boissons_panier = mycursor.fetchall()
-    prix_total = None
+
+    sql_total = """
+        SELECT SUM(boisson.prix_boisson * ligne_panier.quantite_panier) AS total_panier
+        FROM ligne_panier
+        JOIN commande ON ligne_panier.id_commande = commande.id_commande
+        JOIN utilisateur u ON commande.id_utilisateur = u.id_utilisateur
+        JOIN boisson ON ligne_panier.id_boisson = boisson.id_boisson
+        WHERE u.id_utilisateur = %s;
+    """
+
+    mycursor.execute(sql_total, (id_client,))
+    result_total = mycursor.fetchone()
+    prix_total = result_total['total_panier'] if result_total['total_panier'] else 0
+
+    print("boisson_panier:", boissons_panier)
 
     return render_template(
         'client/boutique/panier_boisson.html',
         boissons=boissons,
         boissons_panier=boissons_panier,
+        prix_total=prix_total,
         items_filtre=types_boisson,
         filter_word=filter_word,
         filter_value_min=filter_value_min,
