@@ -62,8 +62,8 @@ def valid_add_boisson():
         filename=None
 
     sql = '''
-          INSERT INTO boisson (nom_boisson, image, prix_boisson, id_type_boisson,id_fruit
-                                `description` )
+          INSERT INTO boisson (nom_boisson, image, prix_boisson, id_type_boisson,id_fruit,
+                                description )
           VALUES (%s, %s, %s, %s, %s,%s) 
           '''
 

@@ -191,3 +191,6 @@ ADD CONSTRAINT fk_ligne_panier_boisson
 FOREIGN KEY (id_boisson)
 REFERENCES boisson(id_boisson)
 ON DELETE CASCADE;
+
+
+SELECT quantite_panier FROM ligne_panier WHERE id_boisson = 3;
