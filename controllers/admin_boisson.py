@@ -17,8 +17,7 @@ admin_boisson = Blueprint('admin_boisson', __name__,
 @admin_boisson.route('/admin/boisson/show')
 def show_boisson():
     mycursor = get_db().cursor()
-    sql = '''  SELECT * FROM boisson;
-    '''
+    sql = '''  SELECT * FROM boisson; '''
     mycursor.execute(sql)
     boissons = mycursor.fetchall()
     return render_template('admin/boisson/show_boisson.html', boissons=boissons)
