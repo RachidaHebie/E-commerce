@@ -143,9 +143,9 @@ INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, 
 
 
 INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
-                                                                                 ('2026-01-23 10:00:00', 15.50, 2, 2),
+                                                                                 ('2026-01-23 10:00:00', 15.50, 2, 3),
                                                                                  ('2026-01-22 15:30:00', 8.75, 2, 2),
-                                                                                 ('2026-01-21 12:45:00', 22.00, 1, 2);
+                                                                                 ('2026-01-21 12:45:00', 22.00, 1, 3);
 
 
 
@@ -193,4 +193,6 @@ REFERENCES boisson(id_boisson)
 ON DELETE CASCADE;
 
 
-SELECT quantite_panier FROM ligne_panier WHERE id_boisson = 3;
+SELECT boisson.nom_boisson FROM ligne_commande
+          JOIN boisson ON boisson.id_boisson = ligne_commande.id_boisson
+          WHERE boisson.id_type_boisson = 1;

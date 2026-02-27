@@ -42,14 +42,27 @@ def delete_type_boisson():
 
     mycursor = get_db().cursor()
 
-    sql = '''
-        DELETE FROM type_boisson
-        WHERE id_type_boisson = %s
-    '''
+    sql = """SELECT boisson.id_boisson FROM ligne_commande
+          JOIN boisson ON boisson.id_boisson = ligne_commande.id_boisson
+          WHERE boisson.id_type_boisson = %s;"""
     mycursor.execute(sql, (id_type_boisson,))
-    get_db().commit()
+    presence_boisson = mycursor.fetchall()
 
-    flash(u'Suppression type boisson, id : ' + id_type_boisson, 'alert-success')
+    if presence_boisson:
+        ids_boissons = [str(boisson['id_boisson']) for boisson in presence_boisson]
+        ids_str = ", ".join(ids_boissons)
+        print("Impossible de supprimer le type de boisson, commande en cours de id : ", {ids_str})
+        message = f'Impossible de supprimer le type de boisson, commande en cours de id : ' + ids_str
+        flash(message, 'alert-danger')
+    else :
+        sql = '''
+            DELETE FROM type_boisson
+            WHERE id_type_boisson = %s
+        '''
+        mycursor.execute(sql, (id_type_boisson,))
+        get_db().commit()
+
+        flash(u'Suppression type boisson, id : ' + id_type_boisson, 'alert-success')
     return redirect('/admin/type-boisson/show')
 
 @admin_type_boisson.route('/admin/type-boisson/edit', methods=['GET'])
