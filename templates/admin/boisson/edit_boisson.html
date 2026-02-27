@@ -25,11 +25,11 @@ types_boisson : tableau de dictionnaires
             <div class="w-25">
                 <form class="w-190" method="post" action="/admin/boisson/edit" enctype="multipart/form-data">
                     <input type="hidden" value="{{ boisson.id_boisson }}" name="id_boisson">
-                    <label for="nom">Nom :
-                        <input name="nom" type="text" value="{{ boisson.nom_boisson }}" class="form-control">
+                    <label for="nom_boisson">Nom :
+                        <input name="nom_boisson" type="text" value="{{ boisson.nom_boisson }}" class="form-control">
                     </label>
                     <label for="prix" > Prix (€) :
-                        <input name="prix" type="number" min="0.0" step="0.01" value="{{ boisson.prix_boisson}}" class="form-control" >
+                        <input name="prix_boisson" type="number" min="0.0" step="0.01" value="{{ boisson.prix_boisson}}" class="form-control" >
                     </label>
                     <label for="image">Image :                       {# à modifier #}
                         <input name="image"  onchange="loadFile(event)" type="file" class="form-control" value="{{ boisson.image }}">             {# à modifier #}
@@ -55,7 +55,7 @@ types_boisson : tableau de dictionnaires
 
                 </label>
                     <label for="stock">stock:
-                    <input name="stock" type="numeric" value="{{ boisson.stock }}" class="form-control" >
+                    <input name="stock" type="number" value="{{ boisson.stock }}" class="form-control" >
                 </label>
                     <button class="btn btn-primary mt-2">
                                 Modifier
