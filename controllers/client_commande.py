@@ -41,23 +41,30 @@ def client_commande_add():
     id_client = session['id_user']
 
     mycursor.execute("""
+        SELECT c.id_commande
+        FROM commande c
+        WHERE c.id_utilisateur = %s AND c.id_etat = 1
+        LIMIT 1
+    """, (id_client,))
+    commande_panier = mycursor.fetchone()
+
+    if not commande_panier:
+        flash(u'Pas de boissons dans le panier', 'alert-warning')
+        return redirect('/client/boisson/show')
+
+    id_commande = commande_panier['id_commande']
+
+    mycursor.execute("""
         SELECT lp.id_boisson, lp.quantite_panier, b.prix_boisson
         FROM ligne_panier lp
         JOIN boisson b ON lp.id_boisson = b.id_boisson
-        JOIN commande c ON lp.id_commande = c.id_commande
-        WHERE c.id_utilisateur = %s AND c.id_etat = 1
-    """, (id_client,))
+        WHERE lp.id_commande = %s
+    """, (id_commande,))
     items_ligne_panier = mycursor.fetchall()
 
     if not items_ligne_panier:
         flash(u'Pas de boissons dans le panier', 'alert-warning')
         return redirect('/client/boisson/show')
-
-    mycursor.execute("""
-        INSERT INTO commande(date_commande, montant_total, id_etat, id_utilisateur)
-        VALUES (NOW(), 0, 1, %s)
-    """, (id_client,))
-    id_commande = mycursor.lastrowid
 
     total_commande = 0
     for item in items_ligne_panier:
@@ -67,21 +74,19 @@ def client_commande_add():
         """, (id_commande, item['id_boisson'], item['quantite_panier']))
         total_commande += item['prix_boisson'] * item['quantite_panier']
 
-        # suppression du panier
-        mycursor.execute("""
-            DELETE FROM ligne_panier
-            WHERE id_boisson = %s
-            AND id_commande IN (SELECT id_commande FROM commande WHERE id_utilisateur = %s AND id_etat = 1)
-        """, (item['id_boisson'], id_client))
-
     mycursor.execute("""
         UPDATE commande
-        SET montant_total = %s
+        SET montant_total = %s, id_etat = 2
         WHERE id_commande = %s
     """, (total_commande, id_commande))
 
+    mycursor.execute("""
+        DELETE FROM ligne_panier
+        WHERE id_commande = %s
+    """, (id_commande,))
+
     get_db().commit()
-    flash(u'Commande ajoutée', 'alert-success')
+    flash(u'Commande ajoutÃ©e', 'alert-success')
     return redirect('/client/boisson/show')
 
 

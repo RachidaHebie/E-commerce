@@ -114,8 +114,10 @@ INSERT INTO utilisateur (id_utilisateur, nom, prenom, login, email, password, ro
                                                                                                                       'ROLE_client','1','01-01-2001');
 
 INSERT INTO etat (libelle_etat) VALUES
-                                    ('Livrée'),
-                                    ('En cours');
+                                    ('Expédié'),
+                                    ('En cours de traitement');
+
+
 
 
 -- Jus
@@ -144,7 +146,7 @@ INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, 
 
 INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
                                                                                  ('2026-01-23 10:00:00', 15.50, 2, 3),
-                                                                                 ('2026-01-22 15:30:00', 8.75, 2, 2),
+                                                                                 ('2026-01-22 15:30:00', 8.15, 2, 2),
                                                                                  ('2026-01-21 12:45:00', 22.00, 1, 3);
 
 

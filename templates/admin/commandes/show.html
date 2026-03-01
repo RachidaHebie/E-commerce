@@ -73,7 +73,7 @@
                         </thead>
                         <tbody>
                         {% for commande in commandes %}
-                            <tr id="" {% if commande.etat_id == 1 %} class="table-warning" style="font-weight: bold;"{% endif %}>
+                            <tr id="" {% if commande.etat_id == 2 %} class="table-warning" style="font-weight: bold;"{% endif %}>
                                 <td>{{ commande.login }}</td>
                                 <td>{{ commande.date_commande.strftime('%d-%m-%Y') }}</td>
                                 <td> {{ commande.nbr_boissons }} </td>

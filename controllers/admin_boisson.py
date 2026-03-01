@@ -113,8 +113,7 @@ def delete_boisson():
         mycursor.execute(sql, id_boisson)
         get_db().commit()
         if image != None:
-            #os.remove('static/images/' + image) # ajouter quand fini sinon ça va supprimer toutes nos images
-            flash("ok")
+            os.remove('static/images/' + image)
 
 
         print("un boisson supprimé, id :", id_boisson)
