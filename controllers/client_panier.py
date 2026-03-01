@@ -11,81 +11,89 @@ client_panier = Blueprint('client_panier', __name__,
 
 @client_panier.route('/client/panier/add', methods=['POST'])
 def client_panier_add():
-    mycursor = get_db().cursor()
+    db = get_db()
+    mycursor = db.cursor()
     id_client = session['id_user']
     id_boisson = request.form.get('id_boisson')
     quantite = request.form.get('quantite')
-    
-    sql = '''
-    SELECT stock
-    FROM boisson
-    WHERE id_boisson = %s;
-    '''
 
-    mycursor.execute(sql, (id_boisson,))
-    stock = mycursor.fetchone()
+    try:
+        quantite = int(quantite)
+        if quantite <= 0:
+            flash("Quantité invalide.", "warning")
+            return redirect('/client/boisson/show')
+    except:
+        flash("Quantité invalide.", "warning")
+        return redirect('/client/boisson/show')
 
-    if int(stock['stock']) >= int(quantite):
-        # On verifie si le panier existe déjà
+    try:
+        db.autocommit = False
+
+        # Vérifier le stock
+        mycursor.execute("""
+            SELECT stock
+            FROM boisson
+            WHERE id_boisson = %s
+        """, (id_boisson,))
+        result_stock = mycursor.fetchone()
+        if not result_stock or result_stock['stock'] < quantite:
+            flash("Stock insuffisant.", "warning")
+            return redirect('/client/boisson/show')
+
+        # récupérer le panier actuel ou en créer un
         mycursor.execute("""
             SELECT id_commande
             FROM commande
-            WHERE id_utilisateur = %s
-            AND id_etat = 1
-            """, (id_client,))
-
+            WHERE id_utilisateur = %s AND id_etat = 1
+            ORDER BY id_commande DESC
+            LIMIT 1
+        """, (id_client,))
         commande = mycursor.fetchone()
 
         if not commande:
             mycursor.execute("""
                 INSERT INTO commande(date_commande, montant_total, id_etat, id_utilisateur)
                 VALUES (NOW(), 0, 1, %s)
-                """, (id_client,))
+            """, (id_client,))
             id_commande = mycursor.lastrowid
-
         else:
             id_commande = commande['id_commande']
 
-
-        # On verifie si la ligne existe déjà
+        # vérifier si la boisson est déjà dans le panier
         mycursor.execute("""
             SELECT quantite_panier
             FROM ligne_panier
             WHERE id_boisson = %s AND id_commande = %s
-            """, (id_boisson, id_commande))
-
+        """, (id_boisson, id_commande))
         ligne = mycursor.fetchone()
 
-        # Update si la ligne existe
         if ligne:
             mycursor.execute("""
                 UPDATE ligne_panier
                 SET quantite_panier = quantite_panier + %s
                 WHERE id_boisson = %s AND id_commande = %s
             """, (quantite, id_boisson, id_commande))
-
-        # On creer une ligne si elle n'existe pas
         else:
             mycursor.execute("""
                 INSERT INTO ligne_panier(id_boisson, id_commande, quantite_panier, date_creation_panier)
                 VALUES (%s, %s, %s, NOW())
-                """, (id_boisson, id_commande, quantite))
-            
-        get_db().commit()
+            """, (id_boisson, id_commande, quantite))
 
-        # On retire le stock
-        nouveau_stock = int(stock['stock']) - int(quantite)
+        # mise à jour du stock
+        nouveau_stock = result_stock['stock'] - quantite
+        mycursor.execute("""
+            UPDATE boisson
+            SET stock = %s
+            WHERE id_boisson = %s
+        """, (nouveau_stock, id_boisson))
 
-        sql = '''
-        UPDATE boisson
-        SET stock = %s
-        WHERE id_boisson = %s;'''
-
-        mycursor.execute(sql, (nouveau_stock, id_boisson))
-        get_db().commit()
-
-    else:
-        flash("Stock insuffisant.", "warning")
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        flash("Erreur lors de l'ajout au panier: %s" % e, "danger")
+        return redirect('/client/boisson/show')
+    finally:
+        mycursor.close()
 
     #id_declinaison_boisson=request.form.get('id_declinaison_boisson',None)
     id_declinaison_boisson = 1
@@ -109,127 +117,166 @@ def client_panier_add():
 
 # ajout dans le panier d'un boisson
 
-
     return redirect('/client/boisson/show')
+
 
 @client_panier.route('/client/panier/delete', methods=['POST'])
 def client_panier_delete():
-    mycursor = get_db().cursor()
+    db = get_db()
+    mycursor = db.cursor()
     id_client = session['id_user']
     id_boisson = request.form.get('id_boisson','')
-    quantite = 1
 
-    # ---------
-    # partie 2 : on supprime une déclinaison de l'boisson
-    # id_declinaison_boisson = request.form.get('id_declinaison_boisson', None)
+    try:
+        db.autocommit = False
 
-    sql = ''' SELECT ligne_panier.* FROM ligne_panier
-                Join commande on ligne_panier.id_commande = commande.id_commande
-                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-                where u.id_utilisateur = %s; '''
+        # récupérer la ligne à supprimer
+        mycursor.execute("""
+            SELECT lp.id_commande, lp.quantite_panier
+            FROM ligne_panier lp
+            JOIN commande c ON lp.id_commande = c.id_commande
+            WHERE c.id_utilisateur = %s
+            AND lp.id_boisson = %s
+            AND c.id_etat = 1
+            ORDER BY lp.id_commande DESC
+            LIMIT 1
+        """, (id_client, id_boisson))
+        ligne = mycursor.fetchone()
 
-    mycursor.execute(sql, (id_client,))
-    ligne_panier = mycursor.fetchone()
+        if not ligne:
+            flash("L'article n'est pas dans le panier.", "warning")
+            return redirect('/client/boisson/show')
 
-    if not(ligne_panier is None) and ligne_panier['quantite_panier'] > 1:
-        sql = '''
-            UPDATE ligne_panier
-            SET quantite_panier = quantite_panier - 1
-            WHERE id_boisson = %s AND id_commande = %s;'''
-        mycursor.execute(sql, (id_boisson, ligne_panier['id_commande']))
-    else:
-        sql = ''' DELETE FROM ligne_panier WHERE id_boisson = %s; '''
-        mycursor.execute(sql, (id_boisson,))
-        
-    #mise à jour du stock
+        if ligne['quantite_panier'] > 1:
+            mycursor.execute("""
+                UPDATE ligne_panier
+                SET quantite_panier = quantite_panier - 1
+                WHERE id_boisson = %s AND id_commande = %s
+            """, (id_boisson, ligne['id_commande']))
+        else:
+            mycursor.execute("""
+                DELETE FROM ligne_panier
+                WHERE id_boisson = %s AND id_commande = %s
+            """, (id_boisson, ligne['id_commande']))
 
-    sql = '''
-        UPDATE boisson
-        SET stock = stock + 1
-        WHERE id_boisson = %s;'''
+        # mise à jour du stock
+        mycursor.execute("""
+            SELECT stock FROM boisson WHERE id_boisson = %s
+        """, (id_boisson,))
+        stock = mycursor.fetchone()
+        nouveau_stock = stock['stock'] + 1
 
-    mycursor.execute(sql, (id_boisson,))
+        mycursor.execute("""
+            UPDATE boisson
+            SET stock = %s
+            WHERE id_boisson = %s
+        """, (nouveau_stock, id_boisson))
 
-    # mise à jour du stock de l'boisson disponible
-    get_db().commit()
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        flash("Erreur lors de la suppression: %s" % e, "danger")
+    finally:
+        mycursor.close()
+
     return redirect('/client/boisson/show')
-
-
-
 
 
 @client_panier.route('/client/panier/vider', methods=['POST'])
 def client_panier_vider():
-    mycursor = get_db().cursor()
+    db = get_db()
+    mycursor = db.cursor()
     client_id = session['id_user']
-    sql = sql = ''' SELECT ligne_panier.* FROM ligne_panier
-                Join commande on ligne_panier.id_commande = commande.id_commande
-                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-                where u.id_utilisateur = %s; '''
 
-    mycursor.execute(sql, (client_id,))
-    items_panier = mycursor.fetchall()
+    try:
+        db.autocommit = False
 
-    for item in items_panier:
-        id_boisson = item['id_boisson']
+        mycursor.execute("""
+            SELECT lp.id_boisson, lp.id_commande, lp.quantite_panier
+            FROM ligne_panier lp
+            JOIN commande c ON lp.id_commande = c.id_commande
+            WHERE c.id_utilisateur = %s
+            AND c.id_etat = 1
+        """, (client_id,))
+        items_panier = mycursor.fetchall()
 
-         # suppression de la ligne du panier
-        sql = ''' DELETE FROM ligne_panier WHERE id_boisson = %s; '''
-        mycursor.execute(sql, (id_boisson,))
-        
-        #mise à jour du stock
-        sql='''Select stock from boisson Where id_boisson = %s;'''
-        mycursor.execute(sql, (id_boisson,))
-        stock = mycursor.fetchone()
-        
-        nouveau_stock = stock['stock'] + item['quantite_panier']
+        for item in items_panier:
+            mycursor.execute("""
+                DELETE FROM ligne_panier
+                WHERE id_boisson = %s AND id_commande = %s
+            """, (item['id_boisson'], item['id_commande']))
 
-        sql = '''
-            UPDATE boisson
-            SET stock = %s
-            WHERE id_boisson = %s;'''
+            mycursor.execute("""
+                SELECT stock FROM boisson WHERE id_boisson = %s
+            """, (item['id_boisson'],))
+            stock = mycursor.fetchone()
+            nouveau_stock = stock['stock'] + item['quantite_panier']
 
-        mycursor.execute(sql, (nouveau_stock, id_boisson))
+            mycursor.execute("""
+                UPDATE boisson
+                SET stock = %s
+                WHERE id_boisson = %s
+            """, (nouveau_stock, item['id_boisson']))
 
-    get_db().commit()
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        flash("Erreur lors du vidage du panier: %s" % e, "danger")
+    finally:
+        mycursor.close()
+
     return redirect('/client/boisson/show')
 
 
 @client_panier.route('/client/panier/delete/line', methods=['POST'])
 def client_panier_delete_line():
-    mycursor = get_db().cursor()
+    db = get_db()
+    mycursor = db.cursor()
     id_client = session['id_user']
     id_boisson = request.form.get('id_boisson','')
-    quantite = request.form.get('quantite')
-    #id_declinaison_boisson = request.form.get('id_declinaison_boisson')
-    # selection de ligne du panier
-    sql = ''' SELECT ligne_panier.* FROM ligne_panier
-                Join commande on ligne_panier.id_commande = commande.id_commande
-                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-                where u.id_utilisateur = %s; '''
 
-    mycursor.execute(sql, (id_client,))
-    ligne_panier = mycursor.fetchone()
+    try:
+        db.autocommit = False
 
-    # suppression de la ligne du panier
-    sql = ''' DELETE FROM ligne_panier WHERE id_boisson = %s; '''
-    mycursor.execute(sql, (id_boisson,))
-    
-    #mise à jour du stock
-    sql='''Select stock from boisson Where id_boisson = %s;'''
-    mycursor.execute(sql, (id_boisson,))
-    stock = mycursor.fetchone()
-    
-    nouveau_stock = stock['stock'] + ligne_panier['quantite_panier']
+        mycursor.execute("""
+            SELECT lp.id_commande, lp.quantite_panier
+            FROM ligne_panier lp
+            JOIN commande c ON lp.id_commande = c.id_commande
+            WHERE c.id_utilisateur = %s
+            AND lp.id_boisson = %s
+            AND c.id_etat = 1
+            ORDER BY lp.id_commande DESC
+            LIMIT 1
+        """, (id_client, id_boisson))
+        ligne_panier = mycursor.fetchone()
 
-    sql = '''
-        UPDATE boisson
-        SET stock = %s
-        WHERE id_boisson = %s;'''
+        if not ligne_panier:
+            flash("Ligne introuvable.", "warning")
+            return redirect('/client/boisson/show')
 
-    mycursor.execute(sql, (nouveau_stock, id_boisson))
+        mycursor.execute("""
+            DELETE FROM ligne_panier
+            WHERE id_boisson = %s AND id_commande = %s
+        """, (id_boisson, ligne_panier['id_commande']))
 
-    get_db().commit()
+        mycursor.execute("""
+            SELECT stock FROM boisson WHERE id_boisson = %s
+        """, (id_boisson,))
+        stock = mycursor.fetchone()
+        nouveau_stock = stock['stock'] + ligne_panier['quantite_panier']
+
+        mycursor.execute("""
+            UPDATE boisson
+            SET stock = %s
+            WHERE id_boisson = %s
+        """, (nouveau_stock, id_boisson))
+
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        flash("Erreur lors de la suppression de ligne: %s" % e, "danger")
+    finally:
+        mycursor.close()
 
     return redirect('/client/boisson/show')
 

@@ -64,26 +64,28 @@
                         </thead>
                         <tbody>
                         {% for commande in commandes %}
-                            <tr id="" {% if commande.id_etat == 2 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
-                                <td>{{ commande.date_commande.strftime('%d-%m-%Y') }}</td>
-                                <td> {{ commande.nbr_boissons }} </td>
-                                <td>
-                                    {{ "{:,.2f} €".format(commande.montant_total) }}
-                                </td>
-                                <td style="text-align: center;">
-                                    {% if commande.id_etat == 1 %} <div style="background-color: #34ce57; padding: 5px;">
-                                     {{ commande.libelle_etat }}
-                                    </div>
-                                    {% else %} <div style="background-color: #ba8b00; padding: 5px;">
-                                        {{ commande.libelle_etat }} </div>
-                                    {% endif %}
-                                </td>
-                                <td style="text-align: center;">
-                                    <a href="/client/commande/show?id_commande={{ commande.id_commande }}">
-                                        <button class="btn btn-primary" > Details </button>
-                                    </a>
-                                </td>
-                            </tr>
+                            {% if commande.nbr_boissons != none %}
+                                <tr id="" {% if commande.id_etat == 2 %} style="background: #FFD600; font-weight: bold;" {% endif %}>
+                                    <td>{{ commande.date_commande.strftime('%d-%m-%Y') }}</td>
+                                    <td> {{ commande.nbr_boissons }} </td>
+                                    <td>
+                                        {{ "{:,.2f} €".format(commande.montant_total) }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        {% if commande.id_etat == 1 %} <div style="background-color: #34ce57; padding: 5px;">
+                                         {{ commande.libelle_etat }}
+                                        </div>
+                                        {% else %} <div style="background-color: #ba8b00; padding: 5px;">
+                                            {{ commande.libelle_etat }} </div>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="/client/commande/show?id_commande={{ commande.id_commande }}">
+                                            <button class="btn btn-primary" > Details </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>

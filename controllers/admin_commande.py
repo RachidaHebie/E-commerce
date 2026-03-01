@@ -34,7 +34,7 @@ def admin_commande_show():
             JOIN boisson b ON lc.id_boisson = b.id_boisson
             JOIN etat e ON c.id_etat = e.id_etat
             GROUP BY c.id_commande, c.date_commande, u.nom, e.libelle_etat, c.id_etat
-            ORDER BY c.date_commande DESC; '''
+            ORDER BY c.id_etat DESC, c.date_commande DESC'''
     mycursor.execute(sql)
     commandes = mycursor.fetchall()
 

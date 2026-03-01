@@ -145,27 +145,47 @@ INSERT INTO boisson (id_boisson, nom_boisson, prix_boisson, marque, founisseur, 
 
 
 INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
-                                                                                 ('2026-01-23 10:00:00', 15.50, 2, 3),
-                                                                                 ('2026-01-22 15:30:00', 8.15, 2, 2),
-                                                                                 ('2026-01-21 12:45:00', 22.00, 1, 3);
+                                                                                 ('2026-01-23 10:00:00', 6.80, 1, 2),
+                                                                                 ('2026-01-22 15:30:00', 9.65, 2, 2),
+                                                                                 ('2026-02-14 12:45:00', 12.60, 2, 2),
+                                                                                 ('2026-03-01 18:50:00', 2.00, 2, 2);
+
+
+INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
+                                                                                 ('2026-01-25 10:00:00', 14.3, 1, 3),
+                                                                                 ('2026-01-02 15:30:00', 9.00, 2, 3),
+                                                                                 ('2026-02-18 12:45:00', 16.10, 2, 3),
+                                                                                 ('2026-02-28 18:50:00', 2.50, 2, 3),
+                                                                                 ('2026-03-01 19:00:00', 0.00, 2, 2); #pour le panier en cours
+                                                                                 # Pas de ligne pour le panier en cours du client 2, se créera automatiquement
 
 
 
 
 INSERT INTO ligne_commande (id_boisson, id_commande, quantite_commande, date_commande) VALUES
-                                                                                           (1, 1, 2, '2026-01-23 10:00:00'),
-                                                                                           (6, 1, 1, '2026-01-23 10:00:00'),
+                                                                                           (1, 1, 2, '2026-01-25 10:00:00'),
+                                                                                           (7, 1, 1, '2026-01-25 10:00:00'),
                                                                                            (2, 2, 1, '2026-01-22 15:30:00'),
-                                                                                           (7, 2, 3, '2026-01-22 15:30:00'),
-                                                                                           (11, 3, 2, '2026-01-21 12:45:00'),
-                                                                                           (12, 3, 1, '2026-01-21 12:45:00');
-INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creation_panier) VALUES
-                                                                                              (3, 1, 1, '2026-01-23 09:45:00'),
-                                                                                              (8, 2, 2, '2026-01-22 15:20:00'),
-                                                                                              (10, 3, 1, '2026-01-21 12:30:00');
+                                                                                           (13, 2, 1, '2026-01-22 15:30:00'),
+                                                                                           (9, 2, 2, '2026-01-22 15:30:00'),
+                                                                                           (3, 3, 1, '2026-02-14 12:45:00'),
+                                                                                           (6, 3, 3, '2026-02-14 12:45:00'),
+                                                                                           (10, 4, 1, '2026-03-01 18:50:00');
 
-DELETE FROM ligne_panier
-WHERE id_boisson = 8;
+
+INSERT INTO ligne_commande (id_boisson, id_commande, quantite_commande, date_commande) VALUES
+                                                                                           (11, 5, 3, '2026-01-25 10:00:00'),
+                                                                                           (8, 5, 2, '2026-01-25 10:00:00'),
+                                                                                           (4, 6, 2, '2026-01-02 15:30:00'),
+                                                                                           (5, 6, 1, '2026-01-02 15:30:00'),
+                                                                                           (12, 7, 1, '2026-02-18 12:45:00'),
+                                                                                           (2, 7, 1, '2026-02-18 12:45:00'),
+                                                                                           (6, 7, 3, '2026-02-18 12:45:00'),
+                                                                                           (1, 8, 1, '2026-02-28 18:50:00');
+
+
+
+
 
 ALTER TABLE boisson
 DROP FOREIGN KEY boisson_ibfk_1;
@@ -195,12 +215,33 @@ REFERENCES boisson(id_boisson)
 ON DELETE CASCADE;
 
 
-SELECT boisson.nom_boisson FROM ligne_commande
-          JOIN boisson ON boisson.id_boisson = ligne_commande.id_boisson
-          WHERE boisson.id_type_boisson = 1;
+-- =============================================
+-- VÉRIFICATIONS
+-- =============================================
 
+-- Toutes les commandes avec leur état et client
+SELECT c.id_commande, c.date_commande, c.montant_total,
+       e.libelle_etat, u.login
+FROM commande c
+JOIN etat e ON c.id_etat = e.id_etat
+JOIN utilisateur u ON c.id_utilisateur = u.id_utilisateur
+ORDER BY c.date_commande;
 
-SELECT ligne_panier.* FROM ligne_panier
-                Join commande on ligne_panier.id_commande = commande.id_commande
-                join utilisateur u on commande.id_utilisateur = u.id_utilisateur
-                where u.id_utilisateur = 2;
+-- Détail des lignes de commande avec le nom et prix des boissons
+SELECT c.id_commande, b.nom_boisson, b.prix_boisson,
+       lc.quantite_commande,
+       (b.prix_boisson * lc.quantite_commande) AS sous_total
+FROM ligne_commande lc
+JOIN boisson b ON lc.id_boisson = b.id_boisson
+JOIN commande c ON lc.id_commande = c.id_commande
+ORDER BY c.id_commande;
+
+-- Vérification cohérence montant_total vs somme des lignes
+SELECT c.id_commande,
+       c.montant_total AS montant_enregistre,
+       SUM(b.prix_boisson * lc.quantite_commande) AS montant_calcule,
+       ROUND(c.montant_total - SUM(b.prix_boisson * lc.quantite_commande), 2) AS ecart
+FROM commande c
+JOIN ligne_commande lc ON c.id_commande = lc.id_commande
+JOIN boisson b ON lc.id_boisson = b.id_boisson
+GROUP BY c.id_commande, c.montant_total;

@@ -129,10 +129,8 @@ def fct_fixtures_load():
 
 
     sql='''INSERT INTO etat(libelle_etat) VALUES
-                                               ('En attente'),
-                                               ('En cours'),
-                                               ('Livrée'),
-                                               ('Annulée');'''
+                                               ('Expédié'),
+                                               ('En cours de traitement');'''
     mycursor.execute(sql)
 
     sql='''
@@ -167,31 +165,49 @@ def fct_fixtures_load():
         '''
     mycursor.execute(sql)
 
+    sql='''INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
+                                                                                 ('2026-01-23 10:00:00', 6.80, 1, 2),
+                                                                                 ('2026-01-22 15:30:00', 9.65, 2, 2),
+                                                                                 ('2026-02-14 12:45:00', 12.60, 2, 2),
+                                                                                 ('2026-03-01 18:50:00', 2.00, 2, 2);'''
+
+    mycursor.execute(sql)
+
     sql='''
         INSERT INTO commande (date_commande, montant_total, id_etat, id_utilisateur) VALUES
-                                                                                         ('2026-01-23 10:00:00', 15.50, 2, 1),
-                                                                                         ('2026-01-22 15:30:00', 8.75, 3, 2),
-                                                                                         ('2026-01-21 12:45:00', 22.00, 1, 3); 
+                                                                                 ('2026-01-25 10:00:00', 14.3, 1, 3),
+                                                                                 ('2026-01-02 15:30:00', 9.00, 2, 3),
+                                                                                 ('2026-02-18 12:45:00', 16.10, 2, 3),
+                                                                                 ('2026-02-28 18:50:00', 2.50, 2, 3),
+                                                                                 ('2026-03-01 19:00:00', 0.00, 2, 2);
 
-        '''
+    '''
     mycursor.execute(sql)
 
     sql='''INSERT INTO ligne_commande (id_boisson, id_commande, quantite_commande, date_commande) VALUES
-                                                                                                      (1, 1, 2, '2026-01-23 10:00:00'),
-                                                                                                      (6, 1, 1, '2026-01-23 10:00:00'),
-                                                                                                      (2, 2, 1, '2026-01-22 15:30:00'),
-                                                                                                      (7, 2, 3, '2026-01-22 15:30:00'),
-                                                                                                      (11, 3, 2, '2026-01-21 12:45:00'),
-                                                                                                      (12, 3, 1, '2026-01-21 12:45:00');'''
+                                                                                           (1, 1, 2, '2026-01-25 10:00:00'),
+                                                                                           (7, 1, 1, '2026-01-25 10:00:00'),
+                                                                                           (2, 2, 1, '2026-01-22 15:30:00'),
+                                                                                           (13, 2, 1, '2026-01-22 15:30:00'),
+                                                                                           (9, 2, 2, '2026-01-22 15:30:00'),
+                                                                                           (3, 3, 1, '2026-02-14 12:45:00'),
+                                                                                           (6, 3, 3, '2026-02-14 12:45:00'),
+                                                                                           (10, 4, 1, '2026-03-01 18:50:00');
+
+'''
     mycursor.execute(sql)
 
     sql='''
-        INSERT INTO ligne_panier (id_boisson, id_commande, quantite_panier, date_creation_panier) VALUES
-                                                                                                      (3, 1, 1, '2026-01-23 09:45:00'),
-                                                                                                      (8, 2, 2, '2026-01-22 15:20:00'),
-                                                                                                      (10, 3, 1, '2026-01-21 12:30:00'); 
-
-        '''
+        INSERT INTO ligne_commande (id_boisson, id_commande, quantite_commande, date_commande) VALUES
+                                                                                           (11, 5, 3, '2026-01-25 10:00:00'),
+                                                                                           (8, 5, 2, '2026-01-25 10:00:00'),
+                                                                                           (4, 6, 2, '2026-01-02 15:30:00'),
+                                                                                           (5, 6, 1, '2026-01-02 15:30:00'),
+                                                                                           (12, 7, 1, '2026-02-18 12:45:00'),
+                                                                                           (2, 7, 1, '2026-02-18 12:45:00'),
+                                                                                           (6, 7, 3, '2026-02-18 12:45:00'),
+                                                                                           (1, 8, 1, '2026-02-28 18:50:00');
+'''
     mycursor.execute(sql)
 
 
